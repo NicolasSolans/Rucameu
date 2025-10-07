@@ -25,5 +25,6 @@ namespace Application.Models.Request
 
         [Range(1, int.MaxValue, ErrorMessage = "El stock inicial tiene que ser de al menos 1.")]
         public int Stock { get; set; } = 1;
+        public bool Enable { get; set; } = true;
     }
 }

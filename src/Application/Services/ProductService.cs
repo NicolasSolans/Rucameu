@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Models.Request;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,46 @@ namespace Application.Services
         }
 
 
-        public Task<List<ProductDTO>> GetAll()
+        public async Task<List<ProductDTO>> GetAll()
         {
-            throw new NotImplementedException();
+            var productList = await _repositoryBase.GetAllAsync();
+            return ProductDTO.CreateListDTO(productList);
         }
 
-        public Task<ProductDTO> GetById(int id)
+        public async Task<List<ProductDTO>> GetAllEnable()
         {
-            throw new NotImplementedException();
+            var productList = await _repositoryBase.GetAllAsync();
+            var EnableProducts = productList.Where(p => p.Enable == true).ToList();
+
+            return ProductDTO.CreateListDTO(EnableProducts);
+        }
+
+        public async Task<ProductDTO> GetById(int id)
+        {
+            var findProduct = await _repositoryBase.GetByIdAsync(id);
+
+            if (findProduct == null)
+            {
+                throw new NotFoundException($"No se encontro el poducto con id {id}");
+            }
+
+            return ProductDTO.CreateDTO(findProduct);
+        }
+
+        public async Task<List<ProductDTO>> GetByName(string name)
+        {
+            var allProducts = await _repositoryBase.GetAllAsync();
+            var productName = allProducts.Where(p => p.Name.Contains(name,StringComparison.OrdinalIgnoreCase)).ToList();
+
+            return ProductDTO.CreateListDTO(productName);
+        }
+
+        public async Task<List<ProductDTO>> GetByNameEnable(string name)
+        {
+            var allProducts = await _repositoryBase.GetAllAsync();
+            var productName = allProducts.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase) && p.Enable == true).ToList();
+
+            return ProductDTO.CreateListDTO(productName);
         }
 
         public async Task<ProductDTO> Create(CreateProductDTO newProduct)
@@ -45,13 +78,37 @@ namespace Application.Services
             return ProductDTO.CreateDTO(productAdd);
         }
 
-        public Task<Product> Update(Product updateProduct)
+        public async Task<ProductDTO> Update(CreateProductDTO updateProduct, int id)
         {
-            throw new NotImplementedException();
+            var findProduct = await _repositoryBase.GetByIdAsync(id);
+
+            if (findProduct == null)
+            {
+                throw new NotFoundException($"No se encontro el producto con id {id}");
+            }
+
+            findProduct.Name = updateProduct.Name;
+            findProduct.Description = updateProduct.Description;
+            findProduct.Price = updateProduct.Price;
+            findProduct.Stock = updateProduct.Stock;
+            findProduct.ImgUrl = updateProduct.ImgUrl;
+
+            await _repositoryBase.UpdateAsync(findProduct);
+            return ProductDTO.CreateDTO(findProduct);
         }
-        public Task Delete(Product deleteProduct)
+        public async Task<string> Disable(int id)
         {
-            throw new NotImplementedException();
+            var findProduct = await _repositoryBase.GetByIdAsync(id);
+
+            if (findProduct == null)
+            {
+                throw new NotFoundException($"No se encontro el producto con id {id}");
+            }
+
+            findProduct.Enable = false;
+            await _repositoryBase.DisableAsync(findProduct);
+            return "Producto borrado correctamente";
+
         }
     }
 }

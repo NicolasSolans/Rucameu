@@ -13,6 +13,7 @@ namespace Application.Models
         public string Description { get; set; }
         public string ImgUrl { get; set; }
         public decimal Price { get; set; }
+        public int Stock { get; set; }
 
         public static ProductDTO CreateDTO(Product product)
             {
@@ -21,6 +22,7 @@ namespace Application.Models
                 dto.Description = product.Description;
                 dto.ImgUrl = product.ImgUrl;
                 dto.Price = product.Price;
+                dto.Stock = product.Stock;
 
                 return dto;
             }

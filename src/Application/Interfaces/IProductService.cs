@@ -13,15 +13,18 @@ namespace Application.Interfaces
     {
         //GET
         Task<List<ProductDTO>> GetAll();
+        Task<List<ProductDTO>> GetAllEnable();
         Task<ProductDTO> GetById(int id);
-        
+        Task<List<ProductDTO>> GetByName(string name);
+        Task<List<ProductDTO>> GetByNameEnable(string name);
+
         //POST
         Task<ProductDTO> Create(CreateProductDTO newProduct);
 
         //UPDATE
-        Task<Product> Update(Product updateProduct);
+        Task<ProductDTO> Update(CreateProductDTO updateProduct, int id);
 
         //DELETE
-        Task Delete(Product deleteProduct);
+        Task<string> Disable(int id);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +20,21 @@ namespace Infrastructure.Data
         }
 
         //GET
-        public Task<Product> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+           return await _context.Set<T>().ToListAsync();
         }
-        public Task<Product> GetByIdAsync(int id)
+
+        public virtual async Task<T> GetByIdAsync(int idEntity)
         {
-            throw new NotImplementedException();
+            var findId = await _context.Set<T>().FindAsync(idEntity);
+            return findId;
         }
+
+        //public virtual async Task<List<T>> GetByNameAsync(string nameEntity)
+        //{
+        //    var product = await _context.Set<T>().FindAsync
+        //}
 
         //POST
         public virtual async Task<T> CreateAsync(T entity)
@@ -37,15 +46,19 @@ namespace Infrastructure.Data
         }
 
         //UPDATE
-        public Task<Product> UpdateAsync(Product updateProduct)
+        public virtual async Task UpdateAsync(T updateEntity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(updateEntity);
+            await _context.SaveChangesAsync();
+            
+
         }
 
         //DELETE
-        public Task<Product> DeleteAsync(int id)
+        public virtual async Task DisableAsync(T disableEntity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(disableEntity);
+            await _context.SaveChangesAsync();
         }
     }
 }

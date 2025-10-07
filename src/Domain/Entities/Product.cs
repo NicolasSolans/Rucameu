@@ -16,5 +16,8 @@ namespace Domain.Entities
         public int Stock { get; set; } = 1;
         public bool Enable { get; set; } = true;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
