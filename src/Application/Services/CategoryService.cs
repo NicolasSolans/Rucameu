@@ -26,9 +26,15 @@ namespace Application.Services
             return CategoryDTO.CreateListDTO(category);
         }
 
-        public Task<CategoryDTO> GetById(int id)
+        public async Task<CategoryDTO> GetById(int id)
         {
-            throw new NotImplementedException();
+            var findCategory = await _repositoryBase.GetByIdAsync(id);
+            if (findCategory == null)
+            {
+                throw new Exception("No se encontro la categoria");
+            }
+
+            return CategoryDTO.CreateDTO(findCategory);
         }
         public async Task<CategoryDTO> Create(CreateCategoryDTO newCategory)
         {
@@ -41,10 +47,20 @@ namespace Application.Services
             return CategoryDTO.CreateDTO(category);
         }
 
-        public Task<CategoryDTO> Update(CreateCategoryDTO updateCategory)
+        public async Task<CategoryDTO> Update(UpdateCategoryDTO updateCategory)
         {
-            throw new NotImplementedException();
+            var findCategory = await _repositoryBase.GetByIdAsync(updateCategory.Id);
+            //if (findCategory == null) throw new Exception("No se encontro la categoría");
+
+            findCategory.Id = updateCategory.Id;
+            findCategory.Name = updateCategory.Name;
+            findCategory.Description = updateCategory.Description;
+
+            await _repositoryBase.UpdateAsync(findCategory);
+            return CategoryDTO.CreateDTO(findCategory);
         }
+
+        //NO SE USA EN CATEGORY.
         public Task<string> Disable(int id)
         {
             throw new NotImplementedException();

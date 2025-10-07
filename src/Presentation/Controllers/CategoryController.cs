@@ -17,16 +17,28 @@ namespace Presentation.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("/GetAllCategory")]
+        [HttpGet("/AllCategory")]
         public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
             return await _categoryService.GetAll();
+        }
+
+        [HttpGet("/GetByIdd/{id}")]
+        public async Task<ActionResult<CategoryDTO>> GetById([FromRoute] int id)
+        {
+            return await _categoryService.GetById(id);
         }
 
         [HttpPost("/CreateCategory")]
         public async Task<ActionResult<CategoryDTO>> Create(CreateCategoryDTO newCategory)
         {
             return await _categoryService.Create(newCategory);
+        }
+
+        [HttpPut("/UpdateCategory")]
+        public async Task<ActionResult<CategoryDTO>> Update([FromBody]UpdateCategoryDTO updateCategory)
+        {
+            return await _categoryService.Update(updateCategory);
         }
     }
 }

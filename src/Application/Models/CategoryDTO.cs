@@ -9,12 +9,14 @@ namespace Application.Models
 {
     public class CategoryDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public static CategoryDTO CreateDTO(Category category)
+        public static CategoryDTO FromEntity(Category category)
         {
             var dto = new CategoryDTO();
+            dto.Id = category.Id;
             dto.Name = category.Name;
             dto.Description = category.Description;
 

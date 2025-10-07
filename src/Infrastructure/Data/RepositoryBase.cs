@@ -31,11 +31,6 @@ namespace Infrastructure.Data
             return findId;
         }
 
-        //public virtual async Task<List<T>> GetByNameAsync(string nameEntity)
-        //{
-        //    var product = await _context.Set<T>().FindAsync
-        //}
-
         //POST
         public virtual async Task<T> CreateAsync(T entity)
         {
