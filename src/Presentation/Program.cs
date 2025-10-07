@@ -22,6 +22,8 @@ options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
 
 var app = builder.Build();
 
