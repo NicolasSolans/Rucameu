@@ -482,3 +482,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Ignorar configuración sensible del entorno de desarrollo
+src/Presentation/appsettings.Development.json
+
