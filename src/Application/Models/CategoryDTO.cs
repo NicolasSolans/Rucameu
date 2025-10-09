@@ -28,7 +28,7 @@ namespace Application.Models
             var dtoList = new List<CategoryDTO>();
             foreach (var c in category)
             {
-                dtoList.Add(CreateDTO(c));
+                dtoList.Add(FromEntity(c));
             }
 
             return dtoList;

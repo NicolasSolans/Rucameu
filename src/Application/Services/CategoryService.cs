@@ -34,7 +34,7 @@ namespace Application.Services
                 throw new Exception("No se encontro la categoria");
             }
 
-            return CategoryDTO.CreateDTO(findCategory);
+            return CategoryDTO.FromEntity(findCategory);
         }
         public async Task<CategoryDTO> Create(CreateCategoryDTO newCategory)
         {
@@ -44,7 +44,7 @@ namespace Application.Services
             category.Description = newCategory.Description;
 
             await _repositoryBase.CreateAsync(category);
-            return CategoryDTO.CreateDTO(category);
+            return CategoryDTO.FromEntity(category);
         }
 
         public async Task<CategoryDTO> Update(UpdateCategoryDTO updateCategory)
@@ -57,7 +57,7 @@ namespace Application.Services
             findCategory.Description = updateCategory.Description;
 
             await _repositoryBase.UpdateAsync(findCategory);
-            return CategoryDTO.CreateDTO(findCategory);
+            return CategoryDTO.FromEntity(findCategory);
         }
 
         //NO SE USA EN CATEGORY.

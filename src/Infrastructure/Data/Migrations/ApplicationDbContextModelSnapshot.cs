@@ -23,118 +23,119 @@ namespace Infrastructure.Data.Migrations
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateRegister")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-                
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                    
-            modelBuilder.Entity("Domain.Entities.Category", b =>
-                {
-                    b.Property<int>("Id")
+            {
+                b.Property<int>("Id")
                     .ValueGeneratedOnAdd()
                     .HasColumnType("int");
 
-            MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                      .IsRequired()
-                      .HasColumnType("longtext");
+                b.Property<DateTime>("DateRegister")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Name")
-                      .IsRequired()
-                      .HasColumnType("longtext");
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                b.Property<string>("LastName")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.ToTable("Categories");
-                  });
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-            modelBuilder.Entity("Domain.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                b.Property<string>("Password")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                b.Property<string>("PhoneNumber")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                b.HasKey("Id");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Enable")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("ImgUrl")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Product", b =>
-                {
-                    b.HasOne("Domain.Entities.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
+                b.ToTable("Users");
+            });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("longtext");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("longtext");
+
+                b.HasKey("Id");
+
+                b.ToTable("Categories");
+            });
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<int>("CategoryId")
+                    .HasColumnType("int");
+
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime(6)");
+
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("longtext");
+
+                b.Property<bool>("Enable")
+                    .HasColumnType("tinyint(1)");
+
+                b.Property<string>("ImgUrl")
+                    .IsRequired()
+                    .HasColumnType("longtext");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("longtext");
+
+                b.Property<decimal>("Price")
+                    .HasColumnType("decimal(65,30)");
+
+                b.Property<int>("Stock")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.HasIndex("CategoryId");
+
+                b.ToTable("Products");
+            });
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+            {
+                b.HasOne("Domain.Entities.Category", "Category")
+                    .WithMany("Products")
+                    .HasForeignKey("CategoryId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                b.Navigation("Category");
+            });
+
+            modelBuilder.Entity("Domain.Entities.Category", b =>
+            {
+                b.Navigation("Products");
+            });
 #pragma warning restore 612, 618
         }
     }
