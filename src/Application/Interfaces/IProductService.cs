@@ -22,7 +22,7 @@ namespace Application.Interfaces
         Task<ProductDTO> Create(CreateProductDTO newProduct);
 
         //UPDATE
-        Task<ProductDTO> Update(CreateProductDTO updateProduct, int id);
+        Task<ProductDTO> Update(UpdateProductDTO updateProduct);
 
         //DELETE
         Task<string> Disable(int id);

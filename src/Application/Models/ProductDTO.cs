@@ -14,6 +14,11 @@ namespace Application.Models
         public string ImgUrl { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
+        public bool Enable { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        public CategoryDTO CategoryDTO { get; set; }
 
         public static ProductDTO CreateDTO(Product product)
             {
@@ -23,6 +28,8 @@ namespace Application.Models
                 dto.ImgUrl = product.ImgUrl;
                 dto.Price = product.Price;
                 dto.Stock = product.Stock;
+                dto.Enable = product.Enable;
+                dto.CategoryDTO = CategoryDTO.FromEntity(product.Category);
 
                 return dto;
             }

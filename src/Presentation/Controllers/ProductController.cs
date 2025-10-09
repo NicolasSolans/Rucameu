@@ -56,9 +56,9 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("/UpdateProduct")]
-        public async Task<ActionResult<ProductDTO>> Update([FromBody] CreateProductDTO updateProduct, int id)
+        public async Task<ActionResult<ProductDTO>> Update([FromBody] UpdateProductDTO updateProduct)
         {
-            var product = await _productService.Update(updateProduct, id);
+            var product = await _productService.Update(updateProduct);
             return Ok(product);
         }
 
