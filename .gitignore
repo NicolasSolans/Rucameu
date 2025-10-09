@@ -484,5 +484,5 @@ $RECYCLE.BIN/
 *.swp
 
 # Ignorar configuración sensible del entorno de desarrollo
-Presentation/appsettings.Development.json
+src/Presentation/appsettings.Development.json
 
