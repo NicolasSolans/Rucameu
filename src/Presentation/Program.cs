@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Agregar y configurar la clase ApplicationDbContext en el contenedor de servicios
+//CONFIGURACION DE LA BASE DE DATOS
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,7 +44,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         ValidateIssuerSigningKey = true
     };
 });*/
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
 builder.Services.AddScoped<IRepositoryBase<User>, RepositoryBase<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
 

@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,36 +14,46 @@ namespace Infrastructure.Data
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         private readonly ApplicationDbContext _context;
-        public RepositoryBase(ApplicationDbContext context)
+
+        public RepositoryBase(ApplicationDbContext context) 
         {
             _context = context;
         }
-        public virtual async Task<T> CreateAsync(T newT)
-        {
-            await _context.Set<T>().AddAsync(newT);
-            await _context.SaveChangesAsync();
-            return newT;
-        }
 
-        public virtual async Task DeleteAsync(T Ttoremove)
-        {
-            await _context.Set<T>().ExecuteDeleteAsync();
-            await _context.SaveChangesAsync();
-        }
-
+        //GET
         public virtual async Task<List<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+           return await _context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int idEntity)
         {
-           return await _context.Set<T>().FindAsync(id);
+            var findId = await _context.Set<T>().FindAsync(idEntity);
+            return findId;
         }
 
-        public virtual async Task UpdateAsync(T UpdatedT)
+        //POST
+        public virtual async Task<T> CreateAsync(T entity)
         {
-           _context.Set<T>().Update(UpdatedT);
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return entity;
+        }
+
+        //UPDATE
+        public virtual async Task UpdateAsync(T updateEntity)
+        {
+            _context.Set<T>().Update(updateEntity);
+            await _context.SaveChangesAsync();
+            
+
+        }
+
+        //DELETE
+        public virtual async Task DisableAsync(T disableEntity)
+        {
+            _context.Set<T>().Update(disableEntity);
             await _context.SaveChangesAsync();
         }
     }

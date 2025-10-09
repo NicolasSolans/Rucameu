@@ -9,11 +9,18 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryBase<T> where T : class
     {
-        Task<T> CreateAsync(T newT);
+        //GET
+        Task<T> GetByIdAsync(int idEntity);
         Task<List<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
-        Task UpdateAsync(T updatedCategory);
-        Task DeleteAsync(T CategoryToRemove);
+        //Task<List<T>> GetByNameAsync(string nameEntity);
 
+        //POST
+        Task<T> CreateAsync(T entity);
+
+        //UPDATE
+        Task UpdateAsync(T updateEntity);
+
+        //Aplica un borrado lógico, no borra literalmente la instancia de la clase.
+        Task DisableAsync(T disableEntity);
     }
 }
