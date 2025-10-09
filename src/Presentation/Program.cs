@@ -48,6 +48,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
 builder.Services.AddScoped<IRepositoryBase<User>, RepositoryBase<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

@@ -14,23 +14,27 @@ namespace Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IRepositoryBase<Product> _repositoryBase;
+        private readonly IRepositoryBase<Product> _repositoryBaseProduct;
+        private readonly IRepositoryBase<Category> _repositoryBaseCategory;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IRepositoryBase<Product> repositoryBase)
+        public ProductService(IRepositoryBase<Product> repositoryBaseProduct, IRepositoryBase<Category> repositoryBaseCategory, IProductRepository productRepository)
         {
-            _repositoryBase = repositoryBase;
+            _repositoryBaseProduct = repositoryBaseProduct;
+            _repositoryBaseCategory = repositoryBaseCategory;
+            _productRepository = productRepository;
         }
 
 
         public async Task<List<ProductDTO>> GetAll()
         {
-            var productList = await _repositoryBase.GetAllAsync();
+            var productList = await _productRepository.GetAllProductsWithCategory();
             return ProductDTO.CreateListDTO(productList);
         }
 
         public async Task<List<ProductDTO>> GetAllEnable()
         {
-            var productList = await _repositoryBase.GetAllAsync();
+            var productList = await _productRepository.GetAllProductsWithCategory();
             var EnableProducts = productList.Where(p => p.Enable == true).ToList();
 
             return ProductDTO.CreateListDTO(EnableProducts);
@@ -38,7 +42,7 @@ namespace Application.Services
 
         public async Task<ProductDTO> GetById(int id)
         {
-            var findProduct = await _repositoryBase.GetByIdAsync(id);
+            var findProduct = await _productRepository.GetByIdProductsWithCategory(id);
 
             if (findProduct == null)
             {
@@ -50,7 +54,7 @@ namespace Application.Services
 
         public async Task<List<ProductDTO>> GetByName(string name)
         {
-            var allProducts = await _repositoryBase.GetAllAsync();
+            var allProducts = await _productRepository.GetAllProductsWithCategory();
             var productName = allProducts.Where(p => p.Name.Contains(name,StringComparison.OrdinalIgnoreCase)).ToList();
 
             return ProductDTO.CreateListDTO(productName);
@@ -58,7 +62,7 @@ namespace Application.Services
 
         public async Task<List<ProductDTO>> GetByNameEnable(string name)
         {
-            var allProducts = await _repositoryBase.GetAllAsync();
+            var allProducts = await _productRepository.GetAllProductsWithCategory();
             var productName = allProducts.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase) && p.Enable == true).ToList();
 
             return ProductDTO.CreateListDTO(productName);
@@ -66,6 +70,9 @@ namespace Application.Services
 
         public async Task<ProductDTO> Create(CreateProductDTO newProduct)
         {
+            var categoryId = await _repositoryBaseCategory.GetByIdAsync(newProduct.CategoryId);
+            if (categoryId == null) throw new Exception("La categoria no existe");
+
             var product = new Product();
 
             product.Name = newProduct.Name;
@@ -73,32 +80,34 @@ namespace Application.Services
             product.Price = newProduct.Price;
             product.Stock = newProduct.Stock;
             product.ImgUrl = newProduct.ImgUrl;
+            product.Category = categoryId;
+            
 
-            var productAdd = await _repositoryBase.CreateAsync(product);
+            var productAdd = await _repositoryBaseProduct.CreateAsync(product);
             return ProductDTO.CreateDTO(productAdd);
         }
 
-        public async Task<ProductDTO> Update(CreateProductDTO updateProduct, int id)
+        public async Task<ProductDTO> Update(UpdateProductDTO updateProduct)
         {
-            var findProduct = await _repositoryBase.GetByIdAsync(id);
+            var findProduct = await _productRepository.GetByIdProductsWithCategory(updateProduct.Id);
+            var findCategory = await _repositoryBaseCategory.GetByIdAsync(updateProduct.CategoryId);
 
-            if (findProduct == null)
-            {
-                throw new NotFoundException($"No se encontro el producto con id {id}");
-            }
+            if (findProduct == null) throw new NotFoundException($"No se encontro el producto con id {updateProduct.Id}");
+            if (findCategory == null) throw new NotFoundException("La categoria no existe");
 
             findProduct.Name = updateProduct.Name;
             findProduct.Description = updateProduct.Description;
             findProduct.Price = updateProduct.Price;
             findProduct.Stock = updateProduct.Stock;
             findProduct.ImgUrl = updateProduct.ImgUrl;
+            findProduct.CategoryId = updateProduct.CategoryId;
 
-            await _repositoryBase.UpdateAsync(findProduct);
+            await _repositoryBaseProduct.UpdateAsync(findProduct);
             return ProductDTO.CreateDTO(findProduct);
         }
         public async Task<string> Disable(int id)
         {
-            var findProduct = await _repositoryBase.GetByIdAsync(id);
+            var findProduct = await _repositoryBaseProduct.GetByIdAsync(id);
 
             if (findProduct == null)
             {
@@ -106,7 +115,7 @@ namespace Application.Services
             }
 
             findProduct.Enable = false;
-            await _repositoryBase.DisableAsync(findProduct);
+            await _repositoryBaseProduct.DisableAsync(findProduct);
             return "Producto borrado correctamente";
 
         }
