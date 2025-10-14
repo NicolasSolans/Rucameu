@@ -50,7 +50,7 @@ namespace Application.Services
         public async Task<CategoryDTO> Update(UpdateCategoryDTO updateCategory)
         {
             var findCategory = await _repositoryBase.GetByIdAsync(updateCategory.Id);
-            //if (findCategory == null) throw new Exception("No se encontro la categoría");
+            if (findCategory == null) throw new Exception("No se encontro la categoría");
 
             findCategory.Id = updateCategory.Id;
             findCategory.Name = updateCategory.Name;
