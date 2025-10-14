@@ -17,6 +17,7 @@ namespace Infrastructure.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,11 @@ namespace Infrastructure.Data
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("UserType")
+                .HasValue<User>("User") //borrar cuando esten las entidades restantes
+                .HasValue<Client>("Client");
         }
     }
 }

@@ -16,6 +16,11 @@ namespace Presentation.Controllers
         {
             _userService = userService;
         }
+        [HttpGet("/GetAllUsers")]
+        public async Task<List<UserDTO>> GetAll()
+        {
+            return await _userService.GetAllUsers();
+        }
 
         [HttpPost("/Register")]
         public async Task<ActionResult<UserDTO>> Create([FromBody] CreateUserDTO createUserDTO)

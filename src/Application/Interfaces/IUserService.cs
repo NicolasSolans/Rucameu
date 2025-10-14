@@ -11,10 +11,13 @@ namespace Application.Interfaces
 {
     public interface IUserService
     {
+        Task<List<UserDTO>> GetAllUsers();
         Task<UserDTO> Register(CreateUserDTO createUserDTO);
+        Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task LogOut(int userId);
         Task<UserDTO> LogIn(string email, string password);
         Task<UserDTO> EditData(UpdateUserDTO updateUser);
+        Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient); 
 
     }
 }

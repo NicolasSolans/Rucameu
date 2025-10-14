@@ -9,6 +9,7 @@ namespace Application.Models
 {
     public class ProductDTO
     {
+        public int Id { get; set; }
         public string Name {  get; set; }
         public string Description { get; set; }
         public string ImgUrl { get; set; }
@@ -23,6 +24,7 @@ namespace Application.Models
         public static ProductDTO CreateDTO(Product product)
             {
                 var dto = new ProductDTO();
+                dto.Id = product.Id;
                 dto.Name = product.Name;
                 dto.Description = product.Description;
                 dto.ImgUrl = product.ImgUrl;
