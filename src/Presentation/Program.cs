@@ -28,6 +28,7 @@ builder.Services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>();
 builder.Services.AddScoped<IRepositoryBase<User>, RepositoryBase<User>>();
+builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();

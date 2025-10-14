@@ -13,7 +13,7 @@ namespace Application.Models
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        //public Rol Rol { get; set; } PARA INGRESAR CUANDO HAGAMOS LA CLASE ROL
+        public string Role { get; set; }
 
         //Se llama FromEntity xq representa la transformación de la clase User (entity) a un DTO
         public static UserDTO FromEntity(User user)
@@ -23,9 +23,23 @@ namespace Application.Models
             dto.FullName = user.Name + " " + user.LastName;
             dto.Email = user.Email;
             dto.PhoneNumber = user.PhoneNumber;
+            dto.Role = user.Role;
             
 
             return dto;
+        }
+
+        public static List<UserDTO> CreateListDTO(List<User> userList)
+        {
+            //Completar...
+            var dtoList = new List<UserDTO>();
+
+            foreach (var p in userList)
+            {
+                dtoList.Add(FromEntity(p));
+            }
+
+            return dtoList;
         }
 
     }

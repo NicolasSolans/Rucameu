@@ -18,6 +18,7 @@ namespace Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
@@ -33,6 +34,7 @@ namespace Infrastructure.Data
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin");
+                .HasValue<Client>("Client");
         }
     }
 }
