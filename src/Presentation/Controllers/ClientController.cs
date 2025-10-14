@@ -15,6 +15,13 @@ namespace Presentation.Controllers
         {
             _userService = userService;
         }
+        [HttpGet("/LogIn")]
+
+        //RUTA GENERICA PARA TODOS LOS USERS.
+        public async Task<ActionResult<UserDTO>> LogIn([FromQuery] string email, string password)
+        {
+            return await _userService.LogIn(email, password);
+        }
 
         [HttpPost("/RegisterClient")]
         public async Task<ActionResult<ClientDTO>> Create([FromBody] CreateClientDTO CreateClientDTO)

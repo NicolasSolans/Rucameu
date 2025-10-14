@@ -4,7 +4,7 @@ using Application.Models.Request;
 using Domain.Entities;
 using Domain.Interfaces;
 using System.Threading.Tasks;
-using Domain.Exeptions;
+using Domain.Exceptions;
 
 namespace Application.Services
 {

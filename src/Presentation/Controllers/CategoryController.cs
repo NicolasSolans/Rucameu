@@ -30,7 +30,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("/CreateCategory")]
-        public async Task<ActionResult<CategoryDTO>> Create(CreateCategoryDTO newCategory)
+        public async Task<ActionResult<CategoryDTO>> Create([FromBody]CreateCategoryDTO newCategory)
         {
             return await _categoryService.Create(newCategory);
         }
