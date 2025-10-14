@@ -16,29 +16,12 @@ namespace Presentation.Controllers
         {
             _userService = userService;
         }
-        [HttpGet("/GetAllUsers")]
-        public async Task<List<UserDTO>> GetAll()
-        {
-            return await _userService.GetAllUsers();
-        }
 
-        [HttpPost("/Register")]
-        public async Task<ActionResult<UserDTO>> Create([FromBody] CreateUserDTO createUserDTO)
-        {
-            return await _userService.Register(createUserDTO);
-        }
-
-        [HttpPut("/UpdateUser")]
-        public async Task<ActionResult<UserDTO>> Update([FromBody] UpdateUserDTO updateUser)
-        {
-            return await _userService.EditData(updateUser);
-        }
-
-        [HttpGet("/LogIn")]
-        public async Task<ActionResult<UserDTO>> LogIn([FromQuery] string email, string password)
-        {
-            return await _userService.LogIn(email, password);
-        }
+        //[HttpGet("/LogIn")]
+        //public async Task<ActionResult<UserDTO>> LogIn([FromQuery] string email, string password)
+        //{
+        //    return await _userService.LogIn(email, password);
+        //}
        
     }
 }
