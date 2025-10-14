@@ -13,11 +13,13 @@ namespace Application.Interfaces
     {
         Task<List<UserDTO>> GetAllUsers();
         Task<UserDTO> Register(CreateUserDTO createUserDTO);
+        Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO);
         Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task LogOut(int userId);
         Task<UserDTO> LogIn(string email, string password);
         Task<UserDTO> EditData(UpdateUserDTO updateUser);
+        Task<UserDTO> DeleteUser(int userId);
+        Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO );
         Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient); 
-
     }
 }

@@ -93,8 +93,16 @@ namespace Infrastructure.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AdminId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateRegister")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -120,18 +128,26 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Users");
 
-                    b.HasDiscriminator<string>("UserType").HasValue("User");
+                    b.HasDiscriminator().HasValue("User");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admin", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User");
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("Admin");
                 });
 
             modelBuilder.Entity("Domain.Entities.Client", b =>
@@ -151,9 +167,21 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Admin", null)
+                        .WithMany("UsersDeleted")
+                        .HasForeignKey("AdminId");
+                });
+
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admin", b =>
+                {
+                    b.Navigation("UsersDeleted");
                 });
 #pragma warning restore 612, 618
         }
