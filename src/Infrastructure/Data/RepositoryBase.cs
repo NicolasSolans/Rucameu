@@ -50,10 +50,17 @@ namespace Infrastructure.Data
 
         }
 
-        //DELETE
+        //LOGIC DELETE
         public virtual async Task DisableAsync(T disableEntity)
         {
             _context.Set<T>().Update(disableEntity);
+            await _context.SaveChangesAsync();
+        }
+
+        //LITERAL DELETE
+        public virtual async Task DeleteAsync(T deleteEntity)
+        {
+            _context.Set<T>().Remove(deleteEntity);
             await _context.SaveChangesAsync();
         }
     }

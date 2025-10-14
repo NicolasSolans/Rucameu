@@ -22,7 +22,7 @@ namespace Presentation.Controllers
         {
             return await _userService.Register(createUserDTO);
         }
-
+        //usar JWT para validar que el id del mismo sea el mismo que viene en la request.
         [HttpPut("/UpdateUser")]
         public async Task<ActionResult<UserDTO>> Update([FromBody] UpdateUserDTO updateUser)
         {
@@ -34,6 +34,13 @@ namespace Presentation.Controllers
         {
             return await _userService.LogIn(email, password);
         }
-       
+
+        [HttpDelete("DeleteUser/{userId}")]
+        public async Task<ActionResult<UserDTO>> DeleteUser([FromRoute] int userId)
+        {
+            var user = await _userService.Delete(userId);
+            return user;
+        }
+
     }
 }

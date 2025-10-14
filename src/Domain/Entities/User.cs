@@ -14,6 +14,7 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
+        public string Role { get; set; } = "User";
         public DateTime DateRegister { get; set; }
 
         public User(string name, string lastName, string email, string password, string phoneNumber)

@@ -21,7 +21,7 @@ namespace Application.Models.Request
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         public string Password { get; set; }
 
-        public User ToEntity()
+        public virtual User ToEntity()
         {
             var user = new User();
             user.Name = this.Name;

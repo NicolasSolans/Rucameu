@@ -11,9 +11,11 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IRepositoryBase<User> _userRepositoryBase;
-        public UserService(IRepositoryBase<User> userRepositoryBase)
+        private readonly IAdminRepository _adminRepository;
+        public UserService(IRepositoryBase<User> userRepositoryBase, IAdminRepository adminRepository)
         {
             _userRepositoryBase = userRepositoryBase;
+            _adminRepository = adminRepository;
         }
 
         //acá directamente borras el token o lo expiras, después hay que hacerlo
@@ -52,9 +54,43 @@ namespace Application.Services
             findUser.Email = updateUserDTO.Email;
             findUser.PhoneNumber = updateUserDTO.PhoneNumber;
             findUser.Password = updateUserDTO.Password;
+            
 
             await _userRepositoryBase.UpdateAsync(findUser);
             return UserDTO.FromEntity(findUser);
         }
+
+
+        // Admin Services
+        public async Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO)
+        {
+            var newAdmin = createAdminDTO.ToEntity();
+            await _userRepositoryBase.CreateAsync(newAdmin);
+            var newAdminDto = AdminDTO.FromEntity(newAdmin);
+            return newAdminDto;
+        }
+        public async Task<UserDTO> DeleteUser(int Id)
+        {
+            var userToDelete = await  _userRepositoryBase.GetByIdAsync(Id);
+            if (userToDelete == null)
+            {
+                throw new NotImplementedException();
+            }
+            // CUANDO TENGAMOS TOKEN, USAR EL ID DEL ADMIN QUE VIENE EN EL MISMO
+            // _adminRepository.AddUserDeleted(userToDelete, adminId);
+            await _userRepositoryBase.DeleteAsync(userToDelete);
+            return UserDTO.FromEntity(userToDelete);
+        }
+        public async Task<UserDTO> ChangeRol(ChangeRolDTO changeRolDTO)
+        {
+            var findUser = await _userRepositoryBase.GetByIdAsync(changeRolDTO.Id);
+            if (findUser == null) throw new NotImplementedException();
+            findUser.Id = changeRolDTO.Id;
+            findUser.Role = changeRolDTO.Role;
+
+            await _userRepositoryBase.UpdateAsync(findUser);
+            return UserDTO.FromEntity(findUser);
+        }
+
     }
 }
