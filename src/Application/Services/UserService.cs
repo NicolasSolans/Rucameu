@@ -11,14 +11,13 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IRepositoryBase<User> _userRepositoryBase;
+        private readonly IRepositoryBase<Admin> _adminRepositoryBase;
         private readonly IRepositoryBase<Client> _clientRepositoryBase;
-
-        
-        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Client> clientRepositoryBase)
+        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Admin> adminRepository, IRepositoryBase<Client> clientRepositoryBase)
         {
             _userRepositoryBase = userRepositoryBase;
+            _adminRepositoryBase = adminRepository;
             _clientRepositoryBase = clientRepositoryBase;
-            
         }
 
         //acá directamente borras el token o lo expiras, después hay que hacerlo
@@ -63,11 +62,44 @@ namespace Application.Services
             findUser.Email = updateUserDTO.Email;
             findUser.PhoneNumber = updateUserDTO.PhoneNumber;
             findUser.Password = updateUserDTO.Password;
+            
 
             await _userRepositoryBase.UpdateAsync(findUser);
             return UserDTO.FromEntity(findUser);
         }
 
+
+        // Admin Services
+        public async Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO)
+        {
+            var newAdmin = createAdminDTO.ToEntity();
+            await _adminRepositoryBase.CreateAsync(newAdmin);
+            var newAdminDto = AdminDTO.FromEntity(newAdmin);
+            return newAdminDto;
+        }
+        public async Task<UserDTO> DeleteUser(int Id)
+        {
+            var userToDelete = await  _userRepositoryBase.GetByIdAsync(Id);
+            if (userToDelete == null)
+            {
+                throw new NotImplementedException();
+            }
+            // CUANDO TENGAMOS TOKEN, USAR EL ID DEL ADMIN QUE VIENE EN EL MISMO
+            // _adminRepository.AddUserDeleted(userToDelete, adminId);
+            await _userRepositoryBase.DeleteAsync(userToDelete);
+            return UserDTO.FromEntity(userToDelete);
+        }
+        public async Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO)
+        {
+            var findUser = await _userRepositoryBase.GetByIdAsync(changeRolDTO.Id);
+            if (findUser == null) throw new NotImplementedException();
+            findUser.Id = changeRolDTO.Id;
+            findUser.Role = changeRolDTO.Role;
+            //findUser.Adress = changeRolDTO.Adress; QUE HAGO CUANDO findUser NO TIENE EL CAMPO 'Adress'
+
+            await _userRepositoryBase.UpdateAsync(findUser);
+            return UserDTO.FromEntity(findUser);
+        }
 
         //CLIENT SERVICES
         public async Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO)

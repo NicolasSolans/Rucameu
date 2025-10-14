@@ -22,5 +22,8 @@ namespace Domain.Interfaces
 
         //Aplica un borrado lógico, no borra literalmente la instancia de la clase.
         Task DisableAsync(T disableEntity);
+
+        //Aplica un borrado literal, borra la instancia de la clase.
+        Task DeleteAsync(T deleteEntity);
     }
 }

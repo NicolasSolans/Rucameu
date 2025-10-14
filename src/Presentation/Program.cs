@@ -22,26 +22,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-/*builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = builder.Configuration["JwtConfig.Issuer"],
-        ValidAudience = builder.Configuration["JwtConfig.Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Key"]!)),
-        ValidateIssuer = true, 
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
-    };
-});*/
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -50,6 +31,7 @@ builder.Services.AddScoped<IRepositoryBase<User>, RepositoryBase<User>>();
 builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
 
 var app = builder.Build();
 
