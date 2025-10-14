@@ -4,18 +4,18 @@ using Application.Models.Request;
 using Domain.Entities;
 using Domain.Interfaces;
 using System.Threading.Tasks;
-using Domain.Exeptions;
+using Domain.Exceptions;
 
 namespace Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IRepositoryBase<User> _userRepositoryBase;
-        private readonly IAdminRepository _adminRepository;
-        public UserService(IRepositoryBase<User> userRepositoryBase, IAdminRepository adminRepository)
+        private readonly IRepositoryBase<Admin> _adminRepositoryBase;
+        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Admin> adminRepository)
         {
             _userRepositoryBase = userRepositoryBase;
-            _adminRepository = adminRepository;
+            _adminRepositoryBase = adminRepository;
         }
 
         //acá directamente borras el token o lo expiras, después hay que hacerlo
@@ -65,7 +65,7 @@ namespace Application.Services
         public async Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO)
         {
             var newAdmin = createAdminDTO.ToEntity();
-            await _userRepositoryBase.CreateAsync(newAdmin);
+            await _adminRepositoryBase.CreateAsync(newAdmin);
             var newAdminDto = AdminDTO.FromEntity(newAdmin);
             return newAdminDto;
         }
@@ -81,12 +81,13 @@ namespace Application.Services
             await _userRepositoryBase.DeleteAsync(userToDelete);
             return UserDTO.FromEntity(userToDelete);
         }
-        public async Task<UserDTO> ChangeRol(ChangeRolDTO changeRolDTO)
+        public async Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO)
         {
             var findUser = await _userRepositoryBase.GetByIdAsync(changeRolDTO.Id);
             if (findUser == null) throw new NotImplementedException();
             findUser.Id = changeRolDTO.Id;
             findUser.Role = changeRolDTO.Role;
+            //findUser.Adress = changeRolDTO.Adress; QUE HAGO CUANDO findUser NO TIENE EL CAMPO 'Adress'
 
             await _userRepositoryBase.UpdateAsync(findUser);
             return UserDTO.FromEntity(findUser);

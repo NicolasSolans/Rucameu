@@ -38,7 +38,7 @@ namespace Presentation.Controllers
         [HttpDelete("DeleteUser/{userId}")]
         public async Task<ActionResult<UserDTO>> DeleteUser([FromRoute] int userId)
         {
-            var user = await _userService.Delete(userId);
+            var user = await _userService.DeleteUser(userId);
             return user;
         }
 
