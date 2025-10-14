@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251010210933_clientMigration")]
+    partial class clientMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,10 +119,6 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("UserType")
                         .IsRequired()
                         .HasMaxLength(8)
@@ -137,6 +136,10 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Domain.Entities.Client", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasDiscriminator().HasValue("Client");
                 });

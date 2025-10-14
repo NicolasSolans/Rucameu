@@ -11,9 +11,14 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IRepositoryBase<User> _userRepositoryBase;
-        public UserService(IRepositoryBase<User> userRepositoryBase)
+        private readonly IRepositoryBase<Client> _clientRepositoryBase;
+
+        
+        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Client> clientRepositoryBase)
         {
             _userRepositoryBase = userRepositoryBase;
+            _clientRepositoryBase = clientRepositoryBase;
+            
         }
 
         //acá directamente borras el token o lo expiras, después hay que hacerlo
@@ -23,6 +28,12 @@ namespace Application.Services
         }
 
         //acá despues hay que hacer todas las validaciones
+        public async Task<List<UserDTO>> GetAllUsers()
+        {
+            var users = await _userRepositoryBase.GetAllAsync();
+            return UserDTO.CreateListDTO(users);
+            
+        }
         public async Task<UserDTO> Register(CreateUserDTO createUserDTO)
         {
             var newUser = createUserDTO.ToEntity();
@@ -55,6 +66,31 @@ namespace Application.Services
 
             await _userRepositoryBase.UpdateAsync(findUser);
             return UserDTO.FromEntity(findUser);
+        }
+
+
+        //CLIENT SERVICES
+        public async Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO)
+        {
+            var newUser = createClientDTO.ToEntity();
+            await _userRepositoryBase.CreateAsync(newUser);
+            var newUserDto = ClientDTO.FromEntity(newUser);
+            return newUserDto;
+        }
+
+        public async Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient)
+        {
+            var user = await _clientRepositoryBase.GetByIdAsync(updateClient.Id);
+            if (user == null) throw new Exception("No se encontro al cliente.");
+
+            user.Name = updateClient.Name;
+            user.LastName = updateClient.LastName;
+            user.Email = updateClient.Email;
+            user.PhoneNumber = updateClient.PhoneNumber;
+            user.Password = updateClient.Password;
+
+            await _userRepositoryBase.UpdateAsync(user);
+            return ClientDTO.FromEntity(user);
         }
     }
 }
