@@ -33,7 +33,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<User>()
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<User>("User")
-                .HasValue<Admin>("Admin");
+                .HasValue<Admin>("Admin")
                 .HasValue<Client>("Client");
         }
     }
