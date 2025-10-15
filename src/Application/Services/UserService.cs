@@ -41,10 +41,10 @@ namespace Application.Services
             return newUserDto;
         }
 
-        public async Task<UserDTO> LogIn(string email, string password)
+        public async Task<UserDTO> LogIn(LoginDTO loginDTO)
         {
             var users = await _userRepositoryBase.GetAllAsync();
-            var userCheck = users.FirstOrDefault(u => u.Email == email && u.Password == password) ;
+            var userCheck = users.FirstOrDefault(u => u.Email == loginDTO.Email && u.Password == loginDTO.Password) ;
             if (userCheck == null) 
             {
                 throw new NotFoundException("email o contraseña invalido");
