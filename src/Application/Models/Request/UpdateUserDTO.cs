@@ -11,8 +11,6 @@ namespace Application.Models.Request
     public class UpdateUserDTO
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "El Rol no puede ser nulo")]
-        public string Role { get; set; }
         [Required(ErrorMessage = "El nombre no puede estár vacío.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "El apellido no puede estár vacío.")]

@@ -13,15 +13,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // ===============================
-//  CONFIGURACIÓN DEL TOKEN JWT
-// ===============================
-//var configuration = builder.Configuration;
-//var jwtSettings = configuration.GetSection("Jwt");
-//var secret = jwtSettings["Secret"];
-//var issuer = jwtSettings["Issuer"];
-//var audience = jwtSettings["Audience"];
-
-// ===============================
 //  SERVICIOS DE LA APLICACIÓN
 // ===============================
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -74,6 +65,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
     };
 }
 );
+builder.Services.AddAuthorization();
 
 // ===============================
 //  CONFIGURACIÓN BASE DE DATOS
@@ -94,13 +86,8 @@ builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
-<<<<<<< HEAD
 builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
-
-builder.Services.AddAuthorization();
-=======
 builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>();
->>>>>>> origin/master
 
 var app = builder.Build();
 

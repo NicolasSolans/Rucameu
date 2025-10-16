@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize (Roles = "Admin, Employee")]
     public class EmployeeController : ControllerBase
     {
         private readonly IUserService _userService;
