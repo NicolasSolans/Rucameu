@@ -24,7 +24,10 @@ var builder = WebApplication.CreateBuilder(args);
 // ===============================
 //  SERVICIOS DE LA APLICACIÓN
 // ===============================
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddEndpointsApiExplorer();
 
 // ===============================
@@ -55,6 +58,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
+//agregamos la configuración para la validación de autenticación
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new()
@@ -90,7 +94,7 @@ builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
 
 builder.Services.AddAuthorization();
 
@@ -102,11 +106,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rucameu API v1");
-        c.RoutePrefix = string.Empty; // Hace que Swagger se abra en la raíz: https://localhost:xxxx
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

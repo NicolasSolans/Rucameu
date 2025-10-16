@@ -11,24 +11,18 @@ namespace Presentation.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IAuthService _authService;
-        public ClientController(IUserService userService, IAuthService authService)
+        public ClientController(IUserService userService)
         {
             _userService = userService;
-            _authService = authService;
         }
         [HttpPost("/LogIn")]
 
         //RUTA GENERICA PARA TODOS LOS USERS.
         public async Task<ActionResult> LogIn([FromBody] LoginDTO loginDTO)
-        {
-            var user = await _authService.ValidateCredentialsAsync(loginDTO.Email, loginDTO.Password);
-            if (user == null) return Unauthorized();
-
-            var token = _authService.GenerateJwtToken(user);
-
+        { 
             await _userService.LogIn(loginDTO);
-            return Ok(new { token });
+            return Ok("Logueado correctamente");
+
         }
 
         [HttpPost("/RegisterClient")]
