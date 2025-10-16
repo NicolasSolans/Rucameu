@@ -17,7 +17,7 @@ namespace Application.Interfaces
         Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task<EmployeeDTO> RegisterEmployee(CreateEmployeeDTO createEmployeeDTO);
         Task LogOut(int userId);
-        Task<UserDTO> LogIn(string email, string password);
+        Task<UserDTO> LogIn(LoginDTO loginDTO);
         Task<UserDTO> EditData(UpdateUserDTO updateUser);
         Task<UserDTO> DeleteUser(int userId);
         Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO );
