@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 # Ignorar configuración sensible del entorno de desarrollo
 src/Presentation/appsettings.Development.json
 
+# Ignorar las migraciones
+Infrastructure/Data/Migrations/
+

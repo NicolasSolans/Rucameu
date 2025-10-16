@@ -33,5 +33,11 @@ namespace Presentation.Controllers
             var user = await _userService.DeleteUser(userId);
             return user;
         }
+
+        [HttpPut("/UpdateAdmin")]
+        public async Task<ActionResult<AdminDTO>> Update([FromBody] UpdateAdminDTO updateAdmin)
+        {
+            return await _userService.UpdateAdmin(updateAdmin);
+        }
     }
 }

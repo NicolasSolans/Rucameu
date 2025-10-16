@@ -13,11 +13,13 @@ namespace Application.Services
         private readonly IRepositoryBase<User> _userRepositoryBase;
         private readonly IRepositoryBase<Admin> _adminRepositoryBase;
         private readonly IRepositoryBase<Client> _clientRepositoryBase;
-        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Admin> adminRepository, IRepositoryBase<Client> clientRepositoryBase)
+        private readonly IRepositoryBase<Employee> _employeeRepositoryBase;
+        public UserService(IRepositoryBase<User> userRepositoryBase, IRepositoryBase<Admin> adminRepository, IRepositoryBase<Client> clientRepositoryBase, IRepositoryBase<Employee> employeeRepositoryBase)
         {
             _userRepositoryBase = userRepositoryBase;
             _adminRepositoryBase = adminRepository;
             _clientRepositoryBase = clientRepositoryBase;
+            _employeeRepositoryBase = employeeRepositoryBase;
         }
 
         //acá directamente borras el token o lo expiras, después hay que hacerlo
@@ -77,6 +79,21 @@ namespace Application.Services
             var newAdminDto = AdminDTO.FromEntity(newAdmin);
             return newAdminDto;
         }
+        public async Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin)
+        {
+            var user = await _adminRepositoryBase.GetByIdAsync(updateAdmin.Id);
+            if (user == null) throw new Exception("No se encontro al cliente.");
+
+            user.Name = updateAdmin.Name;
+            user.LastName = updateAdmin.LastName;
+            user.Email = updateAdmin.Email;
+            user.PhoneNumber = updateAdmin.PhoneNumber;
+            user.Password = updateAdmin.Password;
+            //No actualiza la lista de usuarios eliminados
+
+            await _userRepositoryBase.UpdateAsync(user);
+            return AdminDTO.FromEntity(user);
+        }
         public async Task<UserDTO> DeleteUser(int Id)
         {
             var userToDelete = await  _userRepositoryBase.GetByIdAsync(Id);
@@ -123,6 +140,31 @@ namespace Application.Services
 
             await _userRepositoryBase.UpdateAsync(user);
             return ClientDTO.FromEntity(user);
+        }
+
+
+        // Employee services
+        public async Task<EmployeeDTO> RegisterEmployee(CreateEmployeeDTO createEmployeeDTO)
+        {
+            var newEmployee = createEmployeeDTO.ToEntity();
+            await _employeeRepositoryBase.CreateAsync(newEmployee);
+            var newEmployeeDto = EmployeeDTO.FromEntity(newEmployee);
+            return newEmployeeDto;
+        }
+
+        public async Task<EmployeeDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee)
+        {
+            var user = await _employeeRepositoryBase.GetByIdAsync(updateEmployee.Id);
+            if (user == null) throw new Exception("No se encontro al cliente.");
+
+            user.Name = updateEmployee.Name;
+            user.LastName = updateEmployee.LastName;
+            user.Email = updateEmployee.Email;
+            user.PhoneNumber = updateEmployee.PhoneNumber;
+            user.Password = updateEmployee.Password;
+
+            await _userRepositoryBase.UpdateAsync(user);
+            return EmployeeDTO.FromEntity(user);
         }
     }
 }

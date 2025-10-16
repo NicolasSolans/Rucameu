@@ -147,6 +147,12 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.ToTable("Users", t =>
+                        {
+                            t.Property("Adress")
+                                .HasColumnName("Admin_Adress");
+                        });
+
                     b.HasDiscriminator().HasValue("Admin");
                 });
 
@@ -155,6 +161,17 @@ namespace Infrastructure.Data.Migrations
                     b.HasBaseType("Domain.Entities.User");
 
                     b.HasDiscriminator().HasValue("Client");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Employee", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User");
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>

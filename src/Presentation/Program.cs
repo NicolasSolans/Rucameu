@@ -94,9 +94,13 @@ builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
+<<<<<<< HEAD
 builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
 
 builder.Services.AddAuthorization();
+=======
+builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>();
+>>>>>>> origin/master
 
 var app = builder.Build();
 
