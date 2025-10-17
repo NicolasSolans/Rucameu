@@ -15,5 +15,6 @@ namespace Application.Interfaces
         Task<List<SellPointDTO>> GetSellPointByAdress(string Adress);
         Task DeleteSellPoint(int id);
         Task<SellPointDTO> UpdateSellPoint(UpdateSellPointDTO updateSellPointDTO);
+        Task<List<SellPointCalenderDTO>> GetSellPointsInDateRange(DateTime startDate, DateTime endDate);
     }
 }

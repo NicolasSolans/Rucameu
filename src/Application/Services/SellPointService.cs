@@ -59,5 +59,12 @@ namespace Application.Services
             if (sellPointToUpdate == null) throw new Exception("No se encontro el punto de venta.");
             return SellPointDTO.FromEntity(sellPointToUpdate);
         }
+
+        public async Task<List<SellPointCalenderDTO>> GetSellPointsInDateRange(DateTime startDate, DateTime endDate)
+        {
+            var sellPoints = await _sellPointRepositoryBase.GetAllAsync();
+            var sellPointsInRange = sellPoints.Where(s => s.Date >= startDate && s.Date <= endDate).ToList();
+            return SellPointCalenderDTO.CreateListDTO(sellPointsInRange);
+        }
     }
 }
