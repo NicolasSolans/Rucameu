@@ -11,21 +11,19 @@ namespace Application.Interfaces
 {
     public interface IUserService
     {
-        Task<List<UserDTO>> GetAllUsers();
-        Task<UserDTO> Register(CreateUserDTO createUserDTO);
-        Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO);
-        Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
-        Task<EmployeeDTO> RegisterEmployee(CreateEmployeeDTO createEmployeeDTO);
         Task LogOut(int userId);
-        Task<UserDTO> LogIn(LoginDTO loginDTO);
-        Task<UserDTO> EditData(UpdateUserDTO updateUser);
-        Task<UserDTO> DeleteUser(int userId);
-        Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO );
+        //Client Service
+        Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient);
-        Task<EmployeeDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee);
+        //Admin Service
+        Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO);
         Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin);
-
-
+        Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO);
+        Task<List<UserDTO>> GetAllUsers();
+        Task<UserDTO> DeleteUser(int userId);
+        //Employee Service
+        Task<EmployeeDTO> RegisterEmployee(CreateEmployeeDTO createEmployeeDTO);
+        Task<EmployeeDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee);
 
     }
 }

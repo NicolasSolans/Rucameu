@@ -26,6 +26,11 @@ namespace Infrastructure.Services
             _config = config;
             _userRepositoryBase = userRepositoryBase;
         }
+        public async Task<bool> ValidateIdUser(int userId, int Id)
+        {
+            if (Id != userId) throw new InvalidCredentialsException("No puedes editar un Usuario que no es el tuyo");
+            return true;
+        }
 
         private async Task<User?> ValidateUser(string email, string password)
         {
@@ -68,7 +73,7 @@ namespace Infrastructure.Services
                 _config["Authentication:Audience"],
                 claimsForToken,
                 DateTime.UtcNow,
-                DateTime.UtcNow.AddMinutes(15),
+                DateTime.UtcNow.AddMinutes(15), //TIEMPO DE EXP
                 signature
             );
 
