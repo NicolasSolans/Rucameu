@@ -13,14 +13,5 @@ namespace Application.Models.Request
         public string Name { get; set; }
         public string Description { get; set; }
 
-        //public static UpdateCategoryDTO FromEntity(Category category)
-        //{
-        //    var dto = new UpdateCategoryDTO();
-        //    dto.Id = category.Id;
-        //    dto.Name = category.Name;
-        //    dto.Description = category.Description;
-
-        //    return dto;
-        //}
     }
 }

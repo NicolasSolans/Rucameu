@@ -19,7 +19,7 @@ namespace Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<SellPoint> SellPoints { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
@@ -35,8 +35,7 @@ namespace Infrastructure.Data
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin")
-                .HasValue<Client>("Client")
-                .HasValue<Employee>("Employee");
+                .HasValue<Client>("Client");
         }
     }
 }

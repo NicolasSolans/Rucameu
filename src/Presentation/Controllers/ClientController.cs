@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Controllers;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -42,7 +43,7 @@ namespace Presentation.Controllers
         [HttpPut("/UpdateClient")]
         public async Task<ActionResult<ClientDTO>> Update([FromBody] UpdateClientDTO updateClient)
         {
-            var userId = int.Parse(User.FindFirst("sub")?.Value);
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
             await _authenticationService.ValidateIdUser(userId, updateClient.Id);
             return await _userService.UpdateClient(updateClient);
         }

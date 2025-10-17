@@ -58,6 +58,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
         ValidIssuer = builder.Configuration["Authentication:Issuer"],
         ValidAudience = builder.Configuration["Authentication:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
@@ -84,10 +85,13 @@ builder.Services.AddScoped<IRepositoryBase<Category>, RepositoryBase<Category>>(
 builder.Services.AddScoped<IRepositoryBase<User>, RepositoryBase<User>>();
 builder.Services.AddScoped<IRepositoryBase<Client>, RepositoryBase<Client>>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISellPointService, SellPointService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
 builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>();
+builder.Services.AddScoped<IRepositoryBase<SellPoint>, RepositoryBase<SellPoint>>();
+
 
 var app = builder.Build();
 
