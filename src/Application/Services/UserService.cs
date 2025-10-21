@@ -74,10 +74,51 @@ namespace Application.Services
             if (findUser == null) throw new NotImplementedException();
             findUser.Id = changeRolDTO.Id;
             findUser.Role = changeRolDTO.Role;
-            //findUser.Adress = changeRolDTO.Adress; QUE HAGO CUANDO findUser NO TIENE EL CAMPO 'Adress'
 
-            await _userRepositoryBase.UpdateAsync(findUser);
-            return UserDTO.FromEntity(findUser);
+            if (changeRolDTO.Role == "Admin")
+            {
+                var changedUser = new Admin
+                {
+                    Id = findUser.Id,
+                    Name = findUser.Name,
+                    LastName = findUser.LastName,
+                    Email = findUser.Email,
+                    Password = findUser.Password,
+                    PhoneNumber = findUser.PhoneNumber,
+                    Role = changeRolDTO.Role,
+                    DateRegister = findUser.DateRegister,
+                    Adress = changeRolDTO.Adress!
+                };
+                await _userRepositoryBase.DeleteAsync(findUser);
+                await _userRepositoryBase.CreateAsync(changedUser);
+                return UserDTO.FromEntity(changedUser);
+
+            }
+            else if (changeRolDTO.Role == "Employee")
+            {
+                var changedUser = new Employee
+                {
+                    Id = findUser.Id,
+                    Name = findUser.Name,
+                    LastName = findUser.LastName,
+                    Email = findUser.Email,
+                    Password = findUser.Password,
+                    PhoneNumber = findUser.PhoneNumber,
+                    Role = changeRolDTO.Role,
+                    DateRegister = findUser.DateRegister,
+                    Adress = changeRolDTO.Adress!
+                };
+                await _userRepositoryBase.DeleteAsync(findUser);
+                await _userRepositoryBase.CreateAsync(changedUser);
+                return UserDTO.FromEntity(changedUser);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+
+            //await _userRepositoryBase.UpdateAsync(findUser); Esto no se puede
         }
 
         // EMPLOYEE SERVICE
