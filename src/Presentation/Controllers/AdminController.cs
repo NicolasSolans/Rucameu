@@ -39,5 +39,11 @@ namespace Presentation.Controllers
         {
             return await _userService.UpdateAdmin(updateAdmin);
         }
+
+        [HttpPost("/ChangeRole")]
+        public async Task<ActionResult<UserDTO>> ChangeRole([FromBody] ChangeRolDTO changeRolDTO)
+        {
+            return await _userService.ChangeRole(changeRolDTO);
+        }
     }
 }

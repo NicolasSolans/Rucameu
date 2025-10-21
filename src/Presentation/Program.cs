@@ -68,6 +68,24 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 );
 builder.Services.AddAuthorization();
 
+
+//#region HttpClientFactory
+//ApiClientConfiguration apiBResilienceConfiguration = new()
+//{
+//    RetryCount = 5,
+//    RetryAttemptInSeconds = 2,
+//    DurationOfBreakInSeconds = 8,
+//    HandledEventsAllowedBeforeBreaking = 5
+//};
+
+//builder.Services.AddHttpClient("ExternalApiHttpClient", client =>
+//{
+//    client.BaseAddress = new Uri("https://localhost:7265");
+//})
+//.AddPolicyHandler(PollyResiliencePolicies.GetRetryPolicy(apiBResilienceConfiguration))
+//.AddPolicyHandler(PollyResiliencePolicies.GetCircuitBreakerPolicy(apiBResilienceConfiguration));
+//#endregion
+
 // ===============================
 //  CONFIGURACIÓN BASE DE DATOS
 // ===============================
