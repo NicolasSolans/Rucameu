@@ -12,17 +12,54 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class CartService : ICartService
+    public class CartService
     {
         private readonly ICartRepocitory _cartRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IRepositoryBase<ItemCart> _itemCartRepositoryBase;
+        private readonly IRepositoryBase<ItemCart> _itemCartRepository;
 
         public CartService(ICartRepository cartRepository, IProductRepository productRepository, IRepositoryBase<ItemCart> itemCartRepository )
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
-            _itemCartRepositoryBase = itemCartRepository;
+            _itemCartRepository = itemCartRepository;
+        }
+      
+        public async Task<Cart> GetByUserId(int UserId)
+        {
+            return await _cartRepository.GetByUserIdAsync(UserId);
+        }
+
+        public async Task<Cart> GetById(int id)
+        {
+            return await _cartRepository.GetByIdAsync(id);
+        }
+
+        public async Task<Cart> Create(Cart newCart)
+        {
+            return await _cartRepository.CreateAsync(newCart);
+        }
+
+        public async Task<Cart> Delete(int id)
+        {
+            var cartToDelete = await _cartRepository.GetByIdAsync(id);
+            if (cartToDelete == null)
+            {
+                throw new NotFoundException($"Cart with id {id} not found.");
+            }
+            await _cartRepository.DeleteAsync(cartToDelete);
+            return cartToDelete;
+        }
+
+        public async Task<Cart> Update(Cart updatedCart)
+        {
+            var cartToUpdate = await _cartRepository.GetByIdAsync(updatedCart.Id);
+            if (cartToUpdate == null)
+            {
+                throw new NotFoundException($"Cart with id {updatedCart.Id} not found.");
+            }
+            await _cartRepository.UpdateAsync(updatedCart);
+            return updatedCart;
         }
 
         public async Task<ItemCartDTO> AddItemCart(CreateItemCartDTO CreateItemCartDTO)
@@ -37,7 +74,7 @@ namespace Application.Services
             {
                 
                 itemExistente.Quantity += CreateItemCartDTO.Quantity;
-                return await _itemCartRepositoryBase.UpdateAsync(itemExistente);
+                return await _itemCartRepository.UpdateAsync(itemExistente);
             }
         
                 var nuevoItem = new ItemCart();
@@ -46,7 +83,7 @@ namespace Application.Services
                 nuevoItem.Product = producto;
                 nuevoItem.Quantity = CreateItemCartDTO.Quantity;
                 nuevoItem.Subtotal = producto.Price * CreateItemCartDTO.Quantity;
-                await _itemCartRepositoryBase.CreateAsync(nuevoItem);
+                await _itemCartRepository.CreateAsync(nuevoItem);
                 return ItemCartDTO.FromEntity(nuevoItem);
             
         }
