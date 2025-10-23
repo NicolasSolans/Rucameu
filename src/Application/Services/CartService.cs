@@ -14,7 +14,7 @@ namespace Application.Services
 {
     public class CartService
     {
-        private readonly ICartRepocitory _cartRepository;
+        private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
         private readonly IRepositoryBase<ItemCart> _itemCartRepository;
 
@@ -45,7 +45,7 @@ namespace Application.Services
             var cartToDelete = await _cartRepository.GetByIdAsync(id);
             if (cartToDelete == null)
             {
-                throw new NotFoundException($"Cart with id {id} not found.");
+                throw new NotFoundException($"Carrito con {id} no encontrado.");
             }
             await _cartRepository.DeleteAsync(cartToDelete);
             return cartToDelete;
@@ -56,7 +56,7 @@ namespace Application.Services
             var cartToUpdate = await _cartRepository.GetByIdAsync(updatedCart.Id);
             if (cartToUpdate == null)
             {
-                throw new NotFoundException($"Cart with id {updatedCart.Id} not found.");
+                throw new NotFoundException($"Carrito con id {updatedCart.Id} no encontrado.");
             }
             await _cartRepository.UpdateAsync(updatedCart);
             return updatedCart;
@@ -68,13 +68,14 @@ namespace Application.Services
 
             if (cart == null) throw new NotFoundException("Carrito no encontrado");
 
-            var itemExistente = cart.Items.FirstOrDefault(i => i.ProductoId == CreateItemCartDTO.ProductId);
+            var itemExistente = cart.Items.FirstOrDefault(i => i.ProductId == CreateItemCartDTO.ProductId);
             var producto = await _productRepository.GetByIdProductsWithCategory(CreateItemCartDTO.ProductId);
             if (itemExistente != null)
             {
                 
                 itemExistente.Quantity += CreateItemCartDTO.Quantity;
-                return await _itemCartRepository.UpdateAsync(itemExistente);
+                await _itemCartRepository.UpdateAsync(itemExistente);
+                return ItemCartDTO.FromEntity(itemExistente);
             }
         
                 var nuevoItem = new ItemCart();
