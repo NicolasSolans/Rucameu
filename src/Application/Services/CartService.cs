@@ -12,9 +12,11 @@ namespace Application.Services
     public class CartService
     {
         private readonly ICartRepository _cartRepository;
-        public CartService(ICartRepository cartRepository)
+        private readonly IRepositoryBase<ItemCart> _itemCartRepository;
+        public CartService(ICartRepository cartRepository, IRepositoryBase<ItemCart> itemCartRepository)
         { 
             _cartRepository = cartRepository;
+            _itemCartRepository = itemCartRepository;
         }
 
         public async Task<Cart> GetByUserId(int UserId)
@@ -37,7 +39,7 @@ namespace Application.Services
             var cartToDelete = await _cartRepository.GetByIdAsync(id);
             if (cartToDelete == null)
             {
-                throw new NotFoundException($"Cart with id {id} not found.");
+                throw new NotFoundException($"Carrito con {id} no encontrado.");
             }
             await _cartRepository.DeleteAsync(cartToDelete);
             return cartToDelete;
@@ -48,7 +50,7 @@ namespace Application.Services
             var cartToUpdate = await _cartRepository.GetByIdAsync(updatedCart.Id);
             if (cartToUpdate == null)
             {
-                throw new NotFoundException($"Cart with id {updatedCart.Id} not found.");
+                throw new NotFoundException($"Carrito con id {updatedCart.Id} no encontrado.");
             }
             await _cartRepository.UpdateAsync(updatedCart);
             return updatedCart;
