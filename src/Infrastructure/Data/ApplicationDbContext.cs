@@ -20,6 +20,7 @@ namespace Infrastructure.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<SellPoint> SellPoints { get; set; }
+        public DbSet<Query> Querys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
