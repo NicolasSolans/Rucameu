@@ -1,24 +1,30 @@
-﻿using System;
+﻿using Application.Interfaces;
+using Application.Models;
+using Application.Models.Request;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Interfaces;
-using Domain.Entities;
-using Domain.Exceptions;
 
 namespace Application.Services
 {
     public class CartService
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IRepositoryBase<ItemCart> _itemCartRepository;
-        public CartService(ICartRepository cartRepository, IRepositoryBase<ItemCart> itemCartRepository)
-        { 
+
+        public CartService(ICartRepository cartRepository, IProductRepository productRepository, IRepositoryBase<ItemCart> itemCartRepository )
+        {
             _cartRepository = cartRepository;
+            _productRepository = productRepository;
             _itemCartRepository = itemCartRepository;
         }
-
+      
         public async Task<Cart> GetByUserId(int UserId)
         {
             return await _cartRepository.GetByUserIdAsync(UserId);
@@ -55,4 +61,32 @@ namespace Application.Services
             await _cartRepository.UpdateAsync(updatedCart);
             return updatedCart;
         }
+
+        public async Task<ItemCartDTO> AddItemCart(CreateItemCartDTO CreateItemCartDTO)
+        {
+            var cart = await _cartRepository.GetByIdAsync(CreateItemCartDTO.CartId);
+
+            if (cart == null) throw new NotFoundException("Carrito no encontrado");
+
+            var itemExistente = cart.Items.FirstOrDefault(i => i.ProductId == CreateItemCartDTO.ProductId);
+            var producto = await _productRepository.GetByIdProductsWithCategory(CreateItemCartDTO.ProductId);
+            if (itemExistente != null)
+            {
+                
+                itemExistente.Quantity += CreateItemCartDTO.Quantity;
+                await _itemCartRepository.UpdateAsync(itemExistente);
+                return ItemCartDTO.FromEntity(itemExistente);
+            }
+        
+                var nuevoItem = new ItemCart();
+                nuevoItem.CartId = CreateItemCartDTO.CartId;
+                nuevoItem.ProductId = CreateItemCartDTO.ProductId;
+                nuevoItem.Product = producto;
+                nuevoItem.Quantity = CreateItemCartDTO.Quantity;
+                nuevoItem.Subtotal = producto.Price * CreateItemCartDTO.Quantity;
+                await _itemCartRepository.CreateAsync(nuevoItem);
+                return ItemCartDTO.FromEntity(nuevoItem);
+            
+        }
     }
+}
