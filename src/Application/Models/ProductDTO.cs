@@ -21,7 +21,7 @@ namespace Application.Models
 
         public CategoryDTO CategoryDTO { get; set; }
 
-        public static ProductDTO CreateDTO(Product product)
+        public static ProductDTO FromEntity(Product product)
             {
                 var dto = new ProductDTO();
                 dto.Id = product.Id;
@@ -43,7 +43,7 @@ namespace Application.Models
 
             foreach (var p in productList)
             {
-                dtoList.Add(CreateDTO(p));
+                dtoList.Add(FromEntity(p));
             }
 
             return dtoList;

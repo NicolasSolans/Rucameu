@@ -49,7 +49,7 @@ namespace Application.Services
                 throw new NotFoundException($"No se encontro el poducto con id {id}");
             }
 
-            return ProductDTO.CreateDTO(findProduct);
+            return ProductDTO.FromEntity(findProduct);
         }
 
         public async Task<List<ProductDTO>> GetByName(string name)
@@ -84,7 +84,7 @@ namespace Application.Services
             
 
             var productAdd = await _repositoryBaseProduct.CreateAsync(product);
-            return ProductDTO.CreateDTO(productAdd);
+            return ProductDTO.FromEntity(productAdd);
         }
 
         public async Task<ProductDTO> Update(UpdateProductDTO updateProduct)
@@ -103,7 +103,7 @@ namespace Application.Services
             findProduct.CategoryId = updateProduct.CategoryId;
 
             await _repositoryBaseProduct.UpdateAsync(findProduct);
-            return ProductDTO.CreateDTO(findProduct);
+            return ProductDTO.FromEntity(findProduct);
         }
         public async Task<string> Disable(int id)
         {

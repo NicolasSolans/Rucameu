@@ -36,6 +36,7 @@ namespace Infrastructure.Data
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin")
                 .HasValue<Client>("Client");
+            //modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
         }
     }
 }
