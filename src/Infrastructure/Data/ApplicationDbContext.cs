@@ -20,6 +20,7 @@ namespace Infrastructure.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<SellPoint> SellPoints { get; set; }
+        public DbSet<Query> Querys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
@@ -36,6 +37,7 @@ namespace Infrastructure.Data
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin")
                 .HasValue<Client>("Client");
+            //modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
         }
     }
 }
