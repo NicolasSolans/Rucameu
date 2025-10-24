@@ -18,10 +18,11 @@ namespace Presentation.Controllers
         private readonly IUserService _userService;
         private readonly ICustomAuthenticationService _authenticationService;
         private readonly ICartService _cartService;
-        public ClientController(IUserService userService, ICustomAuthenticationService customAuthenticationService)
+        public ClientController(IUserService userService, ICustomAuthenticationService customAuthenticationService, ICartService cartService)
         {
             _userService = userService;
             _authenticationService = customAuthenticationService;
+            _cartService = cartService;
         }
 
         [AllowAnonymous]

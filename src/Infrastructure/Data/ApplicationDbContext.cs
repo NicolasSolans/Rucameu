@@ -20,24 +20,48 @@ namespace Infrastructure.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<SellPoint> SellPoints { get; set; }
-        public DbSet<Query> Querys { get; set; }
+        public DbSet<Query> Queries { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<ItemCart> ItemCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
+        {
+            base.OnModelCreating(modelBuilder);
+
             // Acá seteas la relación entre Product - Category
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin")
                 .HasValue<Client>("Client");
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Carts)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //    modelBuilder.Entity<ItemCart>()
+            //.HasOne(ic => ic.Cart)
+            //.WithMany(c => c.ItemCarts)
+            //.HasForeignKey(ic => ic.CartId)
+            //.OnDelete(DeleteBehavior.Cascade);
+
+        //    modelBuilder.Entity<ItemCart>()
+        //.HasOne(ic => ic.Product)
+        //.WithMany(p => p.ItemCarts)
+        //.HasForeignKey(ic => ic.ProductId)
+        //.OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
+
+            //Falta relacionar Queries
         }
     }
 }

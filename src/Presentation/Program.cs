@@ -109,6 +109,8 @@ builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
 builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>();
 builder.Services.AddScoped<IRepositoryBase<SellPoint>, RepositoryBase<SellPoint>>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 
 var app = builder.Build();
