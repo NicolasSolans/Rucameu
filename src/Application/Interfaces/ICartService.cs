@@ -21,6 +21,6 @@ namespace Application.Interfaces
         //Task<CartDTO> DeleteItemCart (int cartId, int itemId);
         //Task<CartDTO> AddItemCart(int cartId, ItemCartDTO newItemDTO);
         //Task<CartDTO> UpdateItemCart(int cartId, UpdateItemCartDTO UpdatedItemCartDTO);
-        Task AddItemCart(CreateItemCartDTO CreateItemCartDTO);
+        Task<ItemCartDTO> AddItemCart(CreateItemCartDTO CreateItemCartDTO);
     }
 }
