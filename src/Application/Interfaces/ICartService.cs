@@ -13,6 +13,7 @@ namespace Application.Interfaces
         //CRUD básico
         //Task<List<CartDTO>> GetAll();
         Task<CartDTO> GetByUserId(int id);
+        Task<CartDTO> GetById(int id);
         //Task<CartDTO> Update(UpdateCartDTO updateCart);
         Task<CartDTO> Delete(int id);
         Task<CartDTO> Create(CreateCartDTO newCart);

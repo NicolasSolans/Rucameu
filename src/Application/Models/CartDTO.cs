@@ -11,7 +11,7 @@ namespace Application.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public UserDTO User { get; set; } = new UserDTO();
+        public UserDTO User { get; set; }
         public List<ItemCartDTO> Items { get; set; } = new List<ItemCartDTO>();
         public decimal TotalPrice 
         {

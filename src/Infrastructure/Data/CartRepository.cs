@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Infrastructure.Data
 {
@@ -19,7 +21,8 @@ namespace Infrastructure.Data
         {
             return await _context.Carts
                                  .Include(c => c.Items)
-                                 .LastOrDefaultAsync(c => c.UserId == userId);
+                                 .OrderByDescending(c => c.Id)
+                                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
         public override async Task<Cart> GetByIdAsync(int id)
         {

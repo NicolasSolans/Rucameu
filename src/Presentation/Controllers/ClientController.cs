@@ -43,8 +43,7 @@ namespace Presentation.Controllers
             //Creamos el carrito asociado al cliente
             var createCartDTO = new CreateCartDTO
             {
-                UserId = newClient.Id,
-                User = newClient,
+                UserId = newClient.Id
                 //Items = new List<ItemCartDTO>()
             };
             await _cartService.Create(createCartDTO);

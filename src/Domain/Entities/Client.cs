@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Client : User
     {
-
+        public ICollection<Query> Queries { get; set; }
         // Constructor con los parámetros necesarios, llamando al constructor de User
         public Client()
         {

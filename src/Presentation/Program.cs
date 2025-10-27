@@ -111,6 +111,7 @@ builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>(
 builder.Services.AddScoped<IRepositoryBase<SellPoint>, RepositoryBase<SellPoint>>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IRepositoryBase<ItemCart>, RepositoryBase<ItemCart>>();
 
 
 var app = builder.Build();

@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; } = new User();
+        public User User { get; set; }
         public List<ItemCart> Items { get; set; } = new List<ItemCart>();
         public decimal TotalPrice 
         {

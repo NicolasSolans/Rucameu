@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace Presentation.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
-        CartController(ICartService cartService)
+        public CartController(ICartService cartService)
         {
             _cartService = cartService;
         }
@@ -25,11 +26,5 @@ namespace Presentation.Controllers
             return await _cartService.GetByUserId(userId);
         }
 
-        [HttpGet("/GetCartById")]
-        public async Task<ActionResult<CartDTO>> DeleteItemCart(CreateItemCartDTO createItemCartDTO)
-        {
-
-            //return await _cartService.GetById(id);
-        }
     }
 }
