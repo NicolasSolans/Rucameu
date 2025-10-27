@@ -11,6 +11,8 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Message { get; set; }
         public DateTime DateConsult { get; set; } = DateTime.Now;
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
         public bool Status { get; set; } = false;
         public int CartId { get; set; }
         public int UserId { get; set; }

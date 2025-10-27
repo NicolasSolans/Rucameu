@@ -47,20 +47,25 @@ namespace Infrastructure.Data
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //    modelBuilder.Entity<ItemCart>()
-            //.HasOne(ic => ic.Cart)
-            //.WithMany(c => c.ItemCarts)
-            //.HasForeignKey(ic => ic.CartId)
-            //.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
+            
+            modelBuilder.Entity<ItemCart>()
+                .HasOne(ic => ic.Cart)
+                .WithMany(c => c.Items)
+                .HasForeignKey(ic => ic.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        //    modelBuilder.Entity<ItemCart>()
-        //.HasOne(ic => ic.Product)
-        //.WithMany(p => p.ItemCarts)
-        //.HasForeignKey(ic => ic.ProductId)
-        //.OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ItemCart>()
+                .HasOne(ic => ic.Product)
+                .WithMany(p => p.ItemCarts)
+                .HasForeignKey(ic => ic.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
-
+            modelBuilder.Entity<Query>()
+                .HasOne(q => q.Client)
+                .WithMany(c => c.Queries)
+                .HasForeignKey(q => q.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
             //Falta relacionar Queries
         }
     }
