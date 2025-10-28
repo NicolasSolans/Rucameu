@@ -17,18 +17,27 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
-        public async Task<Cart> GetByUserIdAsync(int userId)
+        public async Task<Cart?> GetByUserIdAsync(int userId)
         {
             return await _context.Carts
-                                 .Include(c => c.Items)
-                                 .OrderByDescending(c => c.Id)
-                                 .FirstOrDefaultAsync(c => c.UserId == userId);
+                .Include(c => c.User)
+                .Include(c => c.Items)
+                    .ThenInclude(i => i.Product)
+                        .ThenInclude(p => p.Category)
+                .Include(c => c.Query) // opcional, si la relación con Query existe
+                .OrderByDescending(c => c.Id)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
         }
-        public override async Task<Cart> GetByIdAsync(int id)
+
+        public override async Task<Cart?> GetByIdAsync(int id)
         {
             return await _context.Carts
-                                 .Include(c => c.Items)
-                                 .FirstOrDefaultAsync(c => c.Id == id);
+                .Include(c => c.User)
+                .Include(c => c.Items)
+                    .ThenInclude(i => i.Product)
+                        .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
+
     }
 }

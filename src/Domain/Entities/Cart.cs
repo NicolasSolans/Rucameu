@@ -12,6 +12,7 @@ namespace Domain.Entities
         public int UserId { get; set; }
         public User User { get; set; }
         public List<ItemCart> Items { get; set; } = new List<ItemCart>();
+        public Query? Query { get; set; } // Relación 0:1
         public decimal TotalPrice 
         {
             get

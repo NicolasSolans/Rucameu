@@ -14,15 +14,18 @@ namespace Application.Services
     public class QueryService : IQueryService
     {
         private readonly IRepositoryBase<Query> _repositoryBase;
-        
-        public QueryService(IRepositoryBase<Query> repositoryBase)
+        private readonly ICartRepository _cartRepository;
+
+        public QueryService(IRepositoryBase<Query> repositoryBase, ICartRepository cartRepository)
         {
             _repositoryBase = repositoryBase;
+            _cartRepository = cartRepository;
         }
 
         public async Task<QueryDTO> CreateQuery(CreateQueryDTO createQuery)
         {
-            var query = createQuery.ToEntity();
+            var cart = await _cartRepository.GetByIdAsync(createQuery.CartId);
+            var query = createQuery.ToEntity(cart);
             var newQuery = await _repositoryBase.CreateAsync(query);
             return QueryDTO.FromEntity(newQuery);
         }

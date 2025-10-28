@@ -14,7 +14,7 @@ namespace Application.Models
         public string Message { get; set; }
         public DateTime DateConsult { get; set; } = DateTime.Now;
         public bool Status { get; set; } = false;
-        //public CartDTO Cart { get; set; }
+        public CartDTO Cart { get; set; }
 
 
         public static QueryDTO FromEntity(Query query)
@@ -24,7 +24,7 @@ namespace Application.Models
             dto.Message = query.Message;
             dto.DateConsult = query.DateConsult;
             dto.Status = query.Status;
-            //dto.Cart = CartDTO.FromEntity(query.Cart);
+            dto.Cart = CartDTO.FromEntity(query.Cart);
 
             return dto;
         }

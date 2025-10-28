@@ -61,11 +61,13 @@ namespace Infrastructure.Data
                 .HasForeignKey(ic => ic.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Query>()
-                .HasOne(q => q.Client)
-                .WithMany(c => c.Queries)
-                .HasForeignKey(q => q.ClientId)
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Query)
+                .WithOne(q => q.Cart)
+                .HasForeignKey<Query>(q => q.CartId)
+                .IsRequired(false) //la FK es opcional (0..1)
                 .OnDelete(DeleteBehavior.Restrict);
+
             //Falta relacionar Queries
         }
     }
