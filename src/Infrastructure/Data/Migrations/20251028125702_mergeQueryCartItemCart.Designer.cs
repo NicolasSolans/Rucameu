@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251025221507_UpdateMigration")]
-    partial class UpdateMigration
+    [Migration("20251028125702_mergeQueryCartItemCart")]
+    partial class mergeQueryCartItemCart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,9 +141,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateConsult")
                         .HasColumnType("datetime(6)");
 
@@ -154,12 +151,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("CartId")
+                        .IsUnique();
 
                     b.ToTable("Queries");
                 });
@@ -305,13 +300,12 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Query", b =>
                 {
-                    b.HasOne("Domain.Entities.Client", "Client")
-                        .WithMany("Queries")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.Cart", "Cart")
+                        .WithOne("Query")
+                        .HasForeignKey("Domain.Entities.Query", "CartId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Client");
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -324,6 +318,8 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("Query");
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
@@ -344,11 +340,6 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Domain.Entities.Admin", b =>
                 {
                     b.Navigation("UsersDeleted");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Client", b =>
-                {
-                    b.Navigation("Queries");
                 });
 #pragma warning restore 612, 618
         }

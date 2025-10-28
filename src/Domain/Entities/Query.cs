@@ -11,12 +11,8 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Message { get; set; }
         public DateTime DateConsult { get; set; } = DateTime.Now;
-        public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public int CartId { get; set; } // FK
+        public Cart Cart { get; set; } // Navigation property
         public bool Status { get; set; } = false;
-        public int CartId { get; set; }
-        public int UserId { get; set; }
-        //public Cart Cart { get; set; } // Navigation property
-
     }
 }

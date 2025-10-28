@@ -12,15 +12,16 @@ namespace Application.Models.Request
     {
         [Required(ErrorMessage = "El nombre es obligatorio")]
         public string Message { get; set; }
-        //public CartDTO Cart { get; set; }
+        public int CartId { get; set; }
 
-         public virtual Query ToEntity()
+         public virtual Query ToEntity(Cart cart)
          {
                var query = new Query();
-               query.Message = this.Message;
+               query.Message = Message;
                query.DateConsult = DateTime.Now;
-               //query.CartId = this.Cart;
-               //query.UserId = this.User;
+               query.CartId = CartId;
+               query.Cart = cart;
+                //query.UserId = this.User;
 
                return query;
          }
