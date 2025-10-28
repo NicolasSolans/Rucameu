@@ -114,6 +114,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IRepositoryBase<ItemCart>, RepositoryBase<ItemCart>>();
 builder.Services.AddScoped<IQueryService, QueryService>();
 builder.Services.AddScoped<IRepositoryBase<Query>, RepositoryBase<Query>>();
+builder.Services.AddScoped<IItemCartRepository, ItemCartRepository>();
 
 
 

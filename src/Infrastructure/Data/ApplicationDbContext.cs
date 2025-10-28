@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
         //DbSets
@@ -39,16 +40,17 @@ namespace Infrastructure.Data
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<User>("User")
                 .HasValue<Admin>("Admin")
-                .HasValue<Client>("Client");
+                .HasValue<Client>("Client")
+                .HasValue<Employee>("Employee");
 
             modelBuilder.Entity<Cart>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Carts)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ItemCart>( ).HasKey(ic => new { ic.CartId, ic.ProductId });
-            
+            modelBuilder.Entity<ItemCart>().HasKey(ic => new { ic.CartId, ic.ProductId });
+
             modelBuilder.Entity<ItemCart>()
                 .HasOne(ic => ic.Cart)
                 .WithMany(c => c.Items)
@@ -68,7 +70,48 @@ namespace Infrastructure.Data
                 .IsRequired(false) //la FK es opcional (0..1)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Falta relacionar Queries
+            modelBuilder.Entity<Admin>().HasData(CreateAdminDataSeed());
+        }
+        private Admin[] CreateAdminDataSeed()
+        {
+            Admin[] Admins = [
+                new Admin
+        {
+            Id = 1,
+            Name = "Luca",
+            LastName = "Pisso",
+            Email = "lucapisso4@gmail.com",
+            PhoneNumber = "3416932072",
+            Password = "luca1234",
+            Adress = "Roldán",
+            Role = "Admin",
+        },
+        new Admin
+        {
+            Id = 2,
+            Name = "Nicolas",
+            LastName = "Solans",
+            Email = "nico.solans.drc@gmail.com",
+            PhoneNumber = "3412173325",
+            Password = "nicolas1234",
+            Adress = "Rosario, centro",
+            Role = "Admin",
+        },
+        new Admin
+        {
+            Id = 3,
+            Name = "Lucas",
+            LastName = "Luppi",
+            Email = "lucasgluppi@gmail.com",
+            PhoneNumber = "3412707429",
+            Password = "lucas1234",
+            Adress = "Rosario, zona oeste",
+            Role = "Admin",
+        }
+            ];
+
+            return Admins;
+
         }
     }
 }
