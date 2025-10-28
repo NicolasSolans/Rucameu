@@ -16,10 +16,10 @@ namespace Application.Services
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IRepositoryBase<ItemCart> _itemCartRepository;
+        private readonly IItemCartRepository _itemCartRepository;
         private readonly IRepositoryBase<User> _userRepository;
 
-        public CartService(ICartRepository cartRepository, IProductRepository productRepository, IRepositoryBase<ItemCart> itemCartRepository, IRepositoryBase<User> userRepository)
+        public CartService(ICartRepository cartRepository, IProductRepository productRepository, IItemCartRepository itemCartRepository, IRepositoryBase<User> userRepository)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
@@ -105,6 +105,22 @@ namespace Application.Services
                 await _itemCartRepository.CreateAsync(nuevoItem);
                 return ItemCartDTO.FromEntity(nuevoItem);
             
+        }
+        public async Task<CartDTO> DeleteItemCart(int cartId, int productId)
+        {
+            var item = await _itemCartRepository.GetByIdAsync(cartId, productId);
+            var cart = await _cartRepository.GetByIdAsync(cartId);
+
+            await _itemCartRepository.DeleteAsync(item);
+
+            cart.TotalPrice = cart.Items
+                .Where(i => !(i.CartId == cartId && i.ProductId == productId))
+                .Sum(i => i.Subtotal);
+
+            await _cartRepository.UpdateAsync(cart);
+
+            var updatedCart = await _cartRepository.GetByIdAsync(cartId);
+            return CartDTO.FromEntity(updatedCart);
         }
     }
 }
