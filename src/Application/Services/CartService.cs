@@ -31,6 +31,10 @@ namespace Application.Services
         {
 
             var cart = await _cartRepository.GetByUserIdAsync(UserId);
+            if (cart == null)
+            {
+                throw new NotFoundException($"Carrito para el usuario con id {UserId} no encontrado.");
+            }
             return CartDTO.FromEntity(cart);
         }
 
