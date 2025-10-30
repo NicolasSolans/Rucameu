@@ -6,8 +6,10 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Resend;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,17 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddEndpointsApiExplorer();
+
+// ===============================
+//  ENVIOS DE EMAILS VIA RESEND
+// ===============================
+
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(
+    builder.Configuration.GetSection("Resend")
+);
+builder.Services.AddTransient<IResend, ResendClient>();
 
 // ===============================
 //  CONFIGURACIÓN SWAGGER
@@ -116,6 +129,7 @@ builder.Services.AddScoped<IQueryService, QueryService>();
 builder.Services.AddScoped<IRepositoryBase<Query>, RepositoryBase<Query>>();
 builder.Services.AddScoped<IItemCartRepository, ItemCartRepository>();
 builder.Services.AddScoped<IQueryRepository, QueryRepository>();
+builder.Services.AddScoped<IResendService, ResendService>();
 
 
 
