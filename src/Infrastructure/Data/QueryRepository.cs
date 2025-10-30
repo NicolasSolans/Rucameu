@@ -19,7 +19,26 @@ namespace Infrastructure.Data
 
         public override async Task<List<Query>> GetAllAsync() //override me permite usar "GetAllAsync" con una implementación diferente a la de RepositoryBase
         {
-            return await _context.Queries.Include(q => q.Cart).ToListAsync();
+                return await _context.Queries
+                .Include(q => q.Cart)
+                    .ThenInclude(c => c.User)
+                .Include(q => q.Cart)
+                .ThenInclude(c => c.Items)             
+                    .ThenInclude(i => i.Product)       
+                        .ThenInclude(p => p.Category)  
+                .ToListAsync();
+        }
+
+        public override async Task<Query?> GetByIdAsync(int id) //Si vuelve a romper sacar el "?".
+        {
+            return await _context.Queries
+                .Include(q => q.Cart)
+                    .ThenInclude(c => c.User)
+                .Include(q => q.Cart)
+                .ThenInclude(c => c.Items)
+                    .ThenInclude(i => i.Product)
+                        .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(q => q.Id == id);
         }
     }
 }

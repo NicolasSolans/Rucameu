@@ -26,6 +26,7 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet("getAllQueries")]
         public async Task<ActionResult<List<QueryDTO>>> GetAllQueries()
         {
@@ -33,6 +34,9 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
+        //GETMYQUERIES
+
+        //[Authorize(Roles = "Admin, Employee")]
         [HttpGet("getQuery/{id}")]
         public async Task<ActionResult<QueryDTO>> GetQueryById([FromRoute] int id)
         {

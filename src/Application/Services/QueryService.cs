@@ -58,7 +58,7 @@ namespace Application.Services
 
         public async Task<QueryDTO> GetQueryById(int id)
         {
-            var query = await _repositoryBase.GetByIdAsync(id);
+            var query = await _queryRepository.GetByIdAsync(id);
             if (query == null) throw new Exception("La query NO existe");
 
             return QueryDTO.FromEntity(query);
