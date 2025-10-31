@@ -20,14 +20,34 @@ namespace Infrastructure.Services
         }
 
         public async Task Execute(QueryDTO query)
-    {
-        var message = new EmailMessage();
-        message.From = query.Cart.User.Email;
-        message.To.Add( "rucameushop@gmail.com" );
-        message.Subject = "Consulta de compra";
-        message.HtmlBody = query.Message + " " + query.Cart.ToString();
+        {
+            var message = new EmailMessage();
+            message.From = "onboarding@resend.dev";
+            message.To.Add("rucameushop@gmail.com");
+            message.Subject = "Consulta de compra";
+            var itemsHtml = string.Join("", query.Cart.Items.Select(item =>
+                $@"<li>
+        {item.ProductDTO.Name} — Cantidad: {item.Quantity} — Subtotal: ${item.Subtotal}
+       </li>"
+            ));
 
-        await _resend.EmailSendAsync( message );
-    }
+            message.HtmlBody = $@"
+<p><strong>{query.Cart.User.Email}</strong> te ha enviado una consulta:</p>
+
+<p style='font-size: 15px; color: #333;'>{query.Message}</p>
+
+<hr/>
+
+<h3>🛒 Detalles del carrito</h3>
+<ul>
+    {itemsHtml}
+</ul>
+
+<p><strong>Total del carrito:</strong> ${query.Cart.TotalPrice}</p>
+<p><strong>ID del carrito:</strong> {query.Cart.Id}</p>
+";
+
+            await _resend.EmailSendAsync(message);
+        }
     }
 }

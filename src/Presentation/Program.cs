@@ -29,10 +29,18 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddOptions();
 builder.Services.AddHttpClient<ResendClient>();
-builder.Services.Configure<ResendClientOptions>(
-    builder.Configuration.GetSection("Resend")
-);
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = builder.Configuration["Resend:ApiKey"];
+});
 builder.Services.AddTransient<IResend, ResendClient>();
+
+//builder.Services.AddOptions();
+//builder.Services.AddHttpClient<ResendClient>();
+//builder.Services.Configure<ResendClientOptions>(
+//    builder.Configuration.GetSection("Resend")
+//);
+//builder.Services.AddTransient<IResend, ResendClient>();
 
 // ===============================
 //  CONFIGURACIÓN SWAGGER
