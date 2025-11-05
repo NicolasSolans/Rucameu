@@ -10,7 +10,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin, Employee")]
+    [Authorize(Roles = "Admin, Employee")]
     public class SellPointController : ControllerBase
     {
         private readonly ISellPointService _sellPointService;
