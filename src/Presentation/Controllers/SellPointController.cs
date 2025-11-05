@@ -10,7 +10,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin, Employee")]
+    //[Authorize(Roles = "Admin, Employee")]
     public class SellPointController : ControllerBase
     {
         private readonly ISellPointService _sellPointService;
@@ -41,8 +41,8 @@ namespace Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/GetByAddress/{address}")]
-        public async Task<List<SellPointDTO>> GetSellPointByAddress([FromRoute] string adress)
+        [HttpGet("/GetByAddress")]
+        public async Task<List<SellPointDTO>> GetSellPointByAddress([FromQuery] string adress)
         {
             return await _sellPointService.GetSellPointByAdress(adress);
         }

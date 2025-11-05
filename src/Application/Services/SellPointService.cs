@@ -45,10 +45,10 @@ namespace Application.Services
             return SellPointDTO.CreateListDTO(sellPoints);
         }
 
-        public async Task<List<SellPointDTO>> GetSellPointByAdress(string Adress)
+        public async Task<List<SellPointDTO>> GetSellPointByAdress(string adress)
         {
             var allSellPoints = await _sellPointRepositoryBase.GetAllAsync();
-            var sellPointAdress = allSellPoints.Where(p => p.Adress.Contains(Adress, StringComparison.OrdinalIgnoreCase)).ToList();
+            var sellPointAdress = allSellPoints.Where(p => p.Adress.ToLower().Contains(adress.ToLower())).ToList();
 
             return SellPointDTO.CreateListDTO(sellPointAdress);
         }
@@ -57,6 +57,11 @@ namespace Application.Services
         {
             var sellPointToUpdate = await _sellPointRepositoryBase.GetByIdAsync(updateSellPointDTO.Id);
             if (sellPointToUpdate == null) throw new Exception("No se encontro el punto de venta.");
+            sellPointToUpdate.Date = updateSellPointDTO.Date;
+            sellPointToUpdate.Adress = updateSellPointDTO.Adress;
+            sellPointToUpdate.Location_link = updateSellPointDTO.Location_link;
+            sellPointToUpdate.Images = updateSellPointDTO.Images;
+            await _sellPointRepositoryBase.UpdateAsync(sellPointToUpdate);
             return SellPointDTO.FromEntity(sellPointToUpdate);
         }
 
