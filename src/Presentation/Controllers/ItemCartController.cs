@@ -31,23 +31,29 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("EliminarItemCart")]
-        public async Task<ActionResult<CartDTO>> DeleteItemCart([FromQuery] int cartId, int productId)
+        public async Task<ActionResult<CartDTO>> DeleteItemCart([FromQuery] int productId)
         {
-            var cart = await _cartService.DeleteItemCart(cartId, productId);
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
+            var Cart = await _cartService.GetByUserId(userId);
+            var cart = await _cartService.DeleteItemCart(Cart.Id, productId);
             return cart;
         }
 
         [HttpPut("IncrementarItemCart")]
-        public async Task<ActionResult<CartDTO>> IncrementItemCart([FromQuery] int cartId, int productId)
+        public async Task<ActionResult<CartDTO>> IncrementItemCart([FromQuery] int productId)
         {
-            var cart = await _cartService.ModifyItemCart(cartId, productId, true);
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
+            var Cart = await _cartService.GetByUserId(userId);
+            var cart = await _cartService.ModifyItemCart(Cart.Id, productId, true);
             return cart;
         }
 
         [HttpPut("DecreaseItemCart")]
-        public async Task<ActionResult<CartDTO>> DecreaseItemCart([FromQuery] int cartId, int productId)
+        public async Task<ActionResult<CartDTO>> DecreaseItemCart([FromQuery] int productId)
         {
-            var cart = await _cartService.ModifyItemCart(cartId, productId, false);
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
+            var Cart = await _cartService.GetByUserId(userId);
+            var cart = await _cartService.ModifyItemCart(Cart.Id, productId, false);
             return cart;
         }
 
