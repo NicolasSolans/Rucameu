@@ -16,12 +16,14 @@ namespace Application.Services
         private readonly IRepositoryBase<Query> _repositoryBase;
         private readonly ICartRepository _cartRepository;
         private readonly IRepositoryBase<User> _userRepository;
+        private readonly IQueryRepository _queryRepository;
 
-        public QueryService(IRepositoryBase<Query> repositoryBase, ICartRepository cartRepository, IRepositoryBase<User> userRepository)
+        public QueryService(IRepositoryBase<Query> repositoryBase, ICartRepository cartRepository, IRepositoryBase<User> userRepository, IQueryRepository queryRepository)
         {
             _repositoryBase = repositoryBase;
             _cartRepository = cartRepository;
             _userRepository = userRepository;
+            _queryRepository = queryRepository;
         }
 
         public async Task<QueryDTO> CreateQuery(CreateQueryDTO createQuery)
@@ -51,14 +53,23 @@ namespace Application.Services
 
         public async Task<List<QueryDTO>> GetAllQueries()
         {
-            return QueryDTO.CreateListDTO(await _repositoryBase.GetAllAsync());
+            return QueryDTO.CreateListDTO(await _queryRepository.GetAllAsync());
         }
 
         public async Task<QueryDTO> GetQueryById(int id)
         {
-            var query = await _repositoryBase.GetByIdAsync(id);
+            var query = await _queryRepository.GetByIdAsync(id);
             if (query == null) throw new Exception("La query NO existe");
 
+            return QueryDTO.FromEntity(query);
+        }
+
+        public async Task<QueryDTO> DeleteQueryAndNewCart(QueryDTO queryDTO)
+        {
+            var query = await _queryRepository.GetByIdAsync(queryDTO.Id);
+            await _queryRepository.DeleteAsync(query);
+            var newCartToDelete = await _cartRepository.GetByUserIdAsync(query.Cart.UserId);
+            await _cartRepository.DeleteAsync(newCartToDelete);
             return QueryDTO.FromEntity(query);
         }
     }

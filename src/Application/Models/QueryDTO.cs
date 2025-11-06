@@ -9,7 +9,6 @@ namespace Application.Models
 {
     public class QueryDTO //Para admin por el momento.
     {
-        //public UserDTO User { get; set; } -> probablemente se borre si CartDTO lo implementa.
         public int Id { get; set; }
         public string Message { get; set; }
         public DateTime DateConsult { get; set; } = DateTime.Now;

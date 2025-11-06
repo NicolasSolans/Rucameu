@@ -19,7 +19,7 @@ namespace Presentation.Controllers
             _cartService = cartService;
         }
 
-        [HttpGet("/GetCartByUserId")]
+        [HttpGet("/GetCartByToken")]
         public async Task<ActionResult<CartDTO>> GetCartByUserId() //desde el token saco el userId
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);

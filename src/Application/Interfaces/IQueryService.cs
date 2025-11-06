@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Models.Request;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Application.Interfaces
         Task<List<QueryDTO>> GetAllQueries();
         Task<QueryDTO> CreateQuery(CreateQueryDTO createQuery);
         Task<QueryDTO> GetQueryById(int id);
+        Task<QueryDTO> DeleteQueryAndNewCart(QueryDTO queryDTO);
+
     }
 }
