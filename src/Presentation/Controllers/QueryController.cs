@@ -27,9 +27,17 @@ namespace Presentation.Controllers
         public async Task<ActionResult<QueryDTO>> CreateQuery([FromBody] CreateQueryDTO createQuery)
         {
             var result = await _queryService.CreateQuery(createQuery);
-            //Envio de email
-            await _resendService.Execute(result);
-            return Ok(result);
+            try
+            {
+                //Envio de email
+                await _resendService.Execute(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var queryDTODeleted = await _queryService.DeleteQueryAndNewCart(result);
+                throw new Exception($"Error interno del servidor: {ex}");
+            }
         }
 
         [Authorize(Roles = "Admin, Employee")]
@@ -40,9 +48,9 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
-        //GETMYQUERIES
+        //GETQUERY
 
-        //[Authorize(Roles = "Admin, Employee")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet("getQuery/{id}")]
         public async Task<ActionResult<QueryDTO>> GetQueryById([FromRoute] int id)
         {

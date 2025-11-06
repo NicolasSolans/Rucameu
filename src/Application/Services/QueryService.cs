@@ -63,5 +63,14 @@ namespace Application.Services
 
             return QueryDTO.FromEntity(query);
         }
+
+        public async Task<QueryDTO> DeleteQueryAndNewCart(QueryDTO queryDTO)
+        {
+            var query = await _queryRepository.GetByIdAsync(queryDTO.Id);
+            await _queryRepository.DeleteAsync(query);
+            var newCartToDelete = await _cartRepository.GetByUserIdAsync(query.Cart.UserId);
+            await _cartRepository.DeleteAsync(newCartToDelete);
+            return QueryDTO.FromEntity(query);
+        }
     }
 }

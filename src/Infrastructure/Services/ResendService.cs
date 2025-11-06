@@ -22,12 +22,12 @@ namespace Infrastructure.Services
         public async Task Execute(QueryDTO query)
         {
             var message = new EmailMessage();
-            message.From = "onboarding@resend.dev";
+            message.From = $"\"{query.Cart.User.Email}\" <onboarding@resend.dev>";
             message.To.Add("rucameushop@gmail.com");
             message.Subject = "Consulta de compra";
             var itemsHtml = string.Join("", query.Cart.Items.Select(item =>
                 $@"<li>
-        {item.ProductDTO.Name} — Cantidad: {item.Quantity} — Subtotal: ${item.Subtotal}
+        {item.ProductDTO.Name} — Cantidad: {item.Quantity} — Subtotal: ${item.Subtotal:F2}
        </li>"
             ));
 
@@ -43,7 +43,7 @@ namespace Infrastructure.Services
     {itemsHtml}
 </ul>
 
-<p><strong>Total del carrito:</strong> ${query.Cart.TotalPrice}</p>
+<p><strong>Total del carrito:</strong> ${query.Cart.TotalPrice:F2}</p>
 <p><strong>ID del carrito:</strong> {query.Cart.Id}</p>
 ";
 
