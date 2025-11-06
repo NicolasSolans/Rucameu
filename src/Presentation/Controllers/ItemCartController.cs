@@ -30,5 +30,26 @@ namespace Presentation.Controllers
             return await _cartService.AddItemCart(createItemCartDTO);
         }
 
+        [HttpDelete("EliminarItemCart")]
+        public async Task<ActionResult<CartDTO>> DeleteItemCart([FromQuery] int cartId, int productId)
+        {
+            var cart = await _cartService.DeleteItemCart(cartId, productId);
+            return cart;
+        }
+
+        [HttpPut("IncrementarItemCart")]
+        public async Task<ActionResult<CartDTO>> IncrementItemCart([FromQuery] int cartId, int productId)
+        {
+            var cart = await _cartService.ModifyItemCart(cartId, productId, true);
+            return cart;
+        }
+
+        [HttpPut("DecreaseItemCart")]
+        public async Task<ActionResult<CartDTO>> DecreaseItemCart([FromQuery] int cartId, int productId)
+        {
+            var cart = await _cartService.ModifyItemCart(cartId, productId, false);
+            return cart;
+        }
+
     }
 }

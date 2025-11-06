@@ -18,7 +18,7 @@ namespace Application.Interfaces
 
         //Operaciones específicas de ItemCart
         Task<ItemCartDTO> AddItemCart(CreateItemCartDTO CreateItemCartDTO);
-        Task<CartDTO> DeleteItemCart (int cartId, int itemId);
-        //Task<CartDTO> UpdateItemCart(int cartId, UpdateItemCartDTO UpdatedItemCartDTO);
+        Task<CartDTO> DeleteItemCart (int cartId, int productId);
+        Task<CartDTO> ModifyItemCart(int cartId, int productId, bool incremented);
     }
 }

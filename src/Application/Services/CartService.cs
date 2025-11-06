@@ -122,5 +122,26 @@ namespace Application.Services
             var updatedCart = await _cartRepository.GetByIdAsync(cartId);
             return CartDTO.FromEntity(updatedCart);
         }
+
+        public async Task<CartDTO> ModifyItemCart(int cartId, int productId, bool incremented)
+        {
+            var item = await _itemCartRepository.GetByIdAsync(cartId, productId);
+            var cart = await _cartRepository.GetByIdAsync(cartId);
+
+            if (incremented)
+            {
+                item.Quantity += 1;  
+            }else
+            {
+                item.Quantity -= 1;
+            }
+
+            cart.TotalPrice = cart.Items
+                .Where(i => !(i.CartId == cartId && i.ProductId == productId))
+                .Sum(i => i.Subtotal);
+            await _cartRepository.UpdateAsync(cart);
+            var updatedCart = await _cartRepository.GetByIdAsync(cartId);
+            return CartDTO.FromEntity(updatedCart);
+        }
     }
 }
