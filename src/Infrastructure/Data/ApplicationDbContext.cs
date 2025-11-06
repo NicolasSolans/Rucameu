@@ -68,7 +68,7 @@ namespace Infrastructure.Data
                 .WithOne(q => q.Cart)
                 .HasForeignKey<Query>(q => q.CartId)
                 .IsRequired(false) //la FK es opcional (0..1)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Admin>().HasData(CreateAdminDataSeed());
         }

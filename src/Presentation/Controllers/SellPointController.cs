@@ -26,7 +26,7 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpDelete("/Delete/{id}")]
+        [HttpDelete("/Delete/{sellPointId}")]
         public async Task<ActionResult> DeleteSellPoint([FromRoute]int sellPointId)
         {
             await _sellPointService.DeleteSellPoint(sellPointId);

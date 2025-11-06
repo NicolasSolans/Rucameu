@@ -92,6 +92,7 @@ namespace Application.Services
 
             var itemExistente = cart.Items.FirstOrDefault(i => i.ProductId == CreateItemCartDTO.ProductId);
             var producto = await _productRepository.GetByIdProductsWithCategory(CreateItemCartDTO.ProductId);
+            if (producto.Enable == false) throw new Exception("Producto no existente.");
             if (itemExistente != null)
             {
                 
@@ -131,6 +132,7 @@ namespace Application.Services
         {
             var item = await _itemCartRepository.GetByIdAsync(cartId, productId);
             var cart = await _cartRepository.GetByIdAsync(cartId);
+            if(item == null) throw new NotFoundException("Item no encontrado en el carrito.");
 
             if (incremented)
             {
@@ -140,6 +142,7 @@ namespace Application.Services
                 item.Quantity -= 1;
             }
 
+            item.Subtotal = item.Product.Price * item.Quantity;
             cart.TotalPrice = cart.Items
                 .Where(i => !(i.CartId == cartId && i.ProductId == productId))
                 .Sum(i => i.Subtotal);

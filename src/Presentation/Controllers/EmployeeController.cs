@@ -4,6 +4,7 @@ using Application.Models.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -13,10 +14,12 @@ namespace Presentation.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICustomAuthenticationService _authenticationService;
 
-        public EmployeeController(IUserService userService)
+        public EmployeeController(IUserService userService, ICustomAuthenticationService authenticationService)
         {
             _userService = userService;
+            _authenticationService = authenticationService;
         }
 
         [HttpPost("/Employee/Register")]
@@ -28,6 +31,8 @@ namespace Presentation.Controllers
         [HttpPut("/UpdateEmployee")]
         public async Task<ActionResult<EmployeeDTO>> Update([FromBody] UpdateEmployeeDTO updateEmployee)
         {
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
+            await _authenticationService.ValidateIdUser(userId, updateEmployee.Id);
             return await _userService.UpdateEmployee(updateEmployee);
         }
     }
