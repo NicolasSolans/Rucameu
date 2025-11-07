@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251030124125_LastMigration")]
+    partial class LastMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +260,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4944),
+                            DateRegister = new DateTime(2025, 10, 30, 9, 41, 23, 390, DateTimeKind.Local).AddTicks(4511),
                             Email = "lucapisso4@gmail.com",
                             LastName = "Pisso",
                             Name = "Luca",
@@ -269,7 +272,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4958),
+                            DateRegister = new DateTime(2025, 10, 30, 9, 41, 23, 390, DateTimeKind.Local).AddTicks(4539),
                             Email = "nico.solans.drc@gmail.com",
                             LastName = "Solans",
                             Name = "Nicolas",
@@ -281,7 +284,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 3,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4960),
+                            DateRegister = new DateTime(2025, 10, 30, 9, 41, 23, 390, DateTimeKind.Local).AddTicks(4544),
                             Email = "lucasgluppi@gmail.com",
                             LastName = "Luppi",
                             Name = "Lucas",

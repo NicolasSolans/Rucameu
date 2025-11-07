@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251021113422_UpdateMigration")]
-    partial class UpdateMigration
+    [Migration("20251028152117_mergeQueryCartItemCart")]
+    partial class mergeQueryCartItemCart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,27 @@ namespace Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
+                });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
@@ -44,6 +65,27 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ItemCart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("CartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ItemCarts");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -86,6 +128,35 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Query", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateConsult")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId")
+                        .IsUnique();
+
+                    b.ToTable("Queries");
                 });
 
             modelBuilder.Entity("Domain.Entities.SellPoint", b =>
@@ -177,7 +248,51 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.ToTable("Users", t =>
+                        {
+                            t.Property("Adress")
+                                .HasColumnName("Admin_Adress");
+                        });
+
                     b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4944),
+                            Email = "lucapisso4@gmail.com",
+                            LastName = "Pisso",
+                            Name = "Luca",
+                            Password = "luca1234",
+                            PhoneNumber = "3416932072",
+                            Role = "Admin",
+                            Adress = "Roldán"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4958),
+                            Email = "nico.solans.drc@gmail.com",
+                            LastName = "Solans",
+                            Name = "Nicolas",
+                            Password = "nicolas1234",
+                            PhoneNumber = "3412173325",
+                            Role = "Admin",
+                            Adress = "Rosario, centro"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4960),
+                            Email = "lucasgluppi@gmail.com",
+                            LastName = "Luppi",
+                            Name = "Lucas",
+                            Password = "lucas1234",
+                            PhoneNumber = "3412707429",
+                            Role = "Admin",
+                            Adress = "Rosario, zona oeste"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Client", b =>
@@ -185,6 +300,47 @@ namespace Infrastructure.Data.Migrations
                     b.HasBaseType("Domain.Entities.User");
 
                     b.HasDiscriminator().HasValue("Client");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Employee", b =>
+                {
+                    b.HasBaseType("Domain.Entities.User");
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("Employee");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Carts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ItemCart", b =>
+                {
+                    b.HasOne("Domain.Entities.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany("ItemCarts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -197,6 +353,16 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Query", b =>
+                {
+                    b.HasOne("Domain.Entities.Cart", "Cart")
+                        .WithOne("Query")
+                        .HasForeignKey("Domain.Entities.Query", "CartId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Cart");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Admin", null)
@@ -204,9 +370,26 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("AdminId");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.Navigation("Items");
+
+                    b.Navigation("Query");
+                });
+
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+                {
+                    b.Navigation("ItemCarts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Carts");
                 });
 
             modelBuilder.Entity("Domain.Entities.Admin", b =>

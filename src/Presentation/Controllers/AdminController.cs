@@ -5,6 +5,7 @@ using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace Presentation.Controllers
@@ -15,10 +16,12 @@ namespace Presentation.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICustomAuthenticationService _authenticationService;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, ICustomAuthenticationService authenticationService)
         {
             _userService = userService;
+            _authenticationService = authenticationService;
         }
 
         [HttpPost("/Admin/Register")]
@@ -37,6 +40,8 @@ namespace Presentation.Controllers
         [HttpPut("/UpdateAdmin")]
         public async Task<ActionResult<AdminDTO>> Update([FromBody] UpdateAdminDTO updateAdmin)
         {
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
+            await _authenticationService.ValidateIdUser(userId, updateAdmin.Id);
             return await _userService.UpdateAdmin(updateAdmin);
         }
 

@@ -26,7 +26,7 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpDelete("/Delete/{id}")]
+        [HttpDelete("/Delete/{sellPointId}")]
         public async Task<ActionResult> DeleteSellPoint([FromRoute]int sellPointId)
         {
             await _sellPointService.DeleteSellPoint(sellPointId);
@@ -41,8 +41,8 @@ namespace Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/GetByAddress/{address}")]
-        public async Task<List<SellPointDTO>> GetSellPointByAddress([FromRoute] string adress)
+        [HttpGet("/GetByAddress")]
+        public async Task<List<SellPointDTO>> GetSellPointByAddress([FromQuery] string adress)
         {
             return await _sellPointService.GetSellPointByAdress(adress);
         }

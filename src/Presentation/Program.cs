@@ -4,10 +4,13 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
+using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Resend;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,44 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddEndpointsApiExplorer();
+
+// ===============================
+//  API de terceros
+// ===============================
+
+ApiClientConfiguration externalApiResilienceConfiguration = new()
+{
+    RetryCount = 5,
+    RetryAttemptInSeconds = 2,
+    DurationOfBreakInSeconds = 8,
+    HandledEventsAllowedBeforeBreaking = 5
+};
+
+// ===============================
+//  ENVIOS DE EMAILS VIA RESEND
+// ===============================
+
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>()
+    .AddPolicyHandler(PollyResiliencePolicies.GetRetryPolicy(externalApiResilienceConfiguration))
+    .AddPolicyHandler(PollyResiliencePolicies.GetCircuitBreakerPolicy(externalApiResilienceConfiguration));
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = builder.Configuration["Resend:ApiKey"];
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+
+// ===============================
+//  API Jokes
+// ===============================
+
+builder.Services.AddHttpClient("jokesHttpClient", client =>
+{
+    client.BaseAddress = new Uri("https://official-joke-api.appspot.com/");
+})
+    .AddPolicyHandler(PollyResiliencePolicies.GetRetryPolicy(externalApiResilienceConfiguration))
+    .AddPolicyHandler(PollyResiliencePolicies.GetCircuitBreakerPolicy(externalApiResilienceConfiguration));
+builder.Services.AddScoped<IJokeService, JokeService>();
 
 // ===============================
 //  CONFIGURACIÓN SWAGGER
@@ -68,24 +109,6 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 );
 builder.Services.AddAuthorization();
 
-
-//#region HttpClientFactory
-//ApiClientConfiguration apiBResilienceConfiguration = new()
-//{
-//    RetryCount = 5,
-//    RetryAttemptInSeconds = 2,
-//    DurationOfBreakInSeconds = 8,
-//    HandledEventsAllowedBeforeBreaking = 5
-//};
-
-//builder.Services.AddHttpClient("ExternalApiHttpClient", client =>
-//{
-//    client.BaseAddress = new Uri("https://localhost:7265");
-//})
-//.AddPolicyHandler(PollyResiliencePolicies.GetRetryPolicy(apiBResilienceConfiguration))
-//.AddPolicyHandler(PollyResiliencePolicies.GetCircuitBreakerPolicy(apiBResilienceConfiguration));
-//#endregion
-
 // ===============================
 //  CONFIGURACIÓN BASE DE DATOS
 // ===============================
@@ -109,6 +132,15 @@ builder.Services.AddScoped<IRepositoryBase<Admin>, RepositoryBase<Admin>>();
 builder.Services.AddScoped<ICustomAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IRepositoryBase<Employee>, RepositoryBase<Employee>>();
 builder.Services.AddScoped<IRepositoryBase<SellPoint>, RepositoryBase<SellPoint>>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IRepositoryBase<ItemCart>, RepositoryBase<ItemCart>>();
+builder.Services.AddScoped<IQueryService, QueryService>();
+builder.Services.AddScoped<IRepositoryBase<Query>, RepositoryBase<Query>>();
+builder.Services.AddScoped<IItemCartRepository, ItemCartRepository>();
+builder.Services.AddScoped<IQueryRepository, QueryRepository>();
+builder.Services.AddScoped<IResendService, ResendService>();
+
 
 
 var app = builder.Build();

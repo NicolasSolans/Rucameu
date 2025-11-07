@@ -15,7 +15,8 @@ namespace Domain.Entities
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; } = "User";
-        public DateTime DateRegister { get; set; }
+        public DateTime DateRegister { get; set; } = DateTime.Now;
+        public List<Cart> Carts { get; set; } = new List<Cart>(); //Se inicializa en vacío por si el usuario no tiene ninguno (ejemplo Admin)
 
         public User(string name, string lastName, string email, string password, string phoneNumber)
         {

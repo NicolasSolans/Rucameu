@@ -8,7 +8,6 @@ namespace Domain.Entities
 {
     public class Client : User
     {
-
         // Constructor con los parámetros necesarios, llamando al constructor de User
         public Client()
         {
@@ -16,6 +15,7 @@ namespace Domain.Entities
         }
 
         //Entidad carrito
+        //public int CartId { get; set; };
         //public Cart Cart { get; set; };
     }
 }

@@ -17,10 +17,12 @@ namespace Presentation.Controllers
     {
         private readonly IUserService _userService;
         private readonly ICustomAuthenticationService _authenticationService;
-        public ClientController(IUserService userService, ICustomAuthenticationService customAuthenticationService)
+        private readonly ICartService _cartService;
+        public ClientController(IUserService userService, ICustomAuthenticationService customAuthenticationService, ICartService cartService)
         {
             _userService = userService;
             _authenticationService = customAuthenticationService;
+            _cartService = cartService;
         }
 
         [AllowAnonymous]
@@ -37,7 +39,15 @@ namespace Presentation.Controllers
         [HttpPost("/RegisterClient")]
         public async Task<ActionResult<ClientDTO>> Create([FromBody] CreateClientDTO CreateClientDTO)
         {
-            return await _userService.RegisterClient(CreateClientDTO);
+            var newClient = await _userService.RegisterClient(CreateClientDTO);
+            //Creamos el carrito asociado al cliente
+            var createCartDTO = new CreateCartDTO
+            {
+                UserId = newClient.Id
+                //Items = new List<ItemCartDTO>()
+            };
+            await _cartService.Create(createCartDTO);
+            return newClient;
         }
 
         [HttpPut("/UpdateClient")]

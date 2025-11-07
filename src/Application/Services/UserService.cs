@@ -44,7 +44,7 @@ namespace Application.Services
         public async Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin)
         {
             var user = await _adminRepositoryBase.GetByIdAsync(updateAdmin.Id);
-            if (user == null) throw new Exception("No se encontro al cliente.");
+            if (user == null) throw new Exception("No se encontro al admin.");
 
             user.Name = updateAdmin.Name;
             user.LastName = updateAdmin.LastName;
@@ -71,7 +71,9 @@ namespace Application.Services
         public async Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO)
         {
             var findUser = await _userRepositoryBase.GetByIdAsync(changeRolDTO.Id);
-            if (findUser == null) throw new NotImplementedException();
+            if (findUser == null) throw new NotImplementedException("No se encontro al usuario.");
+            if (findUser.Id <= 3) throw new Exception("No se puede editar un super admin.");
+
             findUser.Id = changeRolDTO.Id;
             findUser.Role = changeRolDTO.Role;
 
