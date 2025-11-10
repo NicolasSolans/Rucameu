@@ -16,13 +16,22 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // ===============================
-//  SERVICIOS DE LA APLICACIÓN
+//  SERVICIOS DE LA APLICACIï¿½N
 // ===============================
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:5173") // puerto del front con Vite
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 // ===============================
 //  API de terceros
@@ -63,7 +72,7 @@ builder.Services.AddHttpClient("jokesHttpClient", client =>
 builder.Services.AddScoped<IJokeService, JokeService>();
 
 // ===============================
-//  CONFIGURACIÓN SWAGGER
+//  CONFIGURACIï¿½N SWAGGER
 // ===============================
 builder.Services.AddSwaggerGen(setupAction =>
 {
@@ -71,7 +80,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Acá pega el token generado al loguearte"
+        Description = "Acï¿½ pega el token generado al loguearte"
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -90,7 +99,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-//agregamos la configuración para la validación de autenticación
+//agregamos la configuraciï¿½n para la validaciï¿½n de autenticaciï¿½n
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new()
@@ -110,14 +119,14 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 builder.Services.AddAuthorization();
 
 // ===============================
-//  CONFIGURACIÓN BASE DE DATOS
+//  CONFIGURACIï¿½N BASE DE DATOS
 // ===============================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // ===============================
-//  INYECCIÓN DE DEPENDENCIAS
+//  INYECCIï¿½N DE DEPENDENCIAS
 // ===============================
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
@@ -146,7 +155,7 @@ builder.Services.AddScoped<IResendService, ResendService>();
 var app = builder.Build();
 
 // ===============================
-//  PIPELINE DE EJECUCIÓN
+//  PIPELINE DE EJECUCIï¿½N
 // ===============================
 if (app.Environment.IsDevelopment())
 {
@@ -155,6 +164,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
