@@ -52,7 +52,7 @@ namespace Presentation.Controllers
             return await _productService.GetByNameEnable(name);
         }
 
-        [HttpPost]
+        [HttpPost("/CreateProduct")]
         public async Task<ActionResult<ProductDTO>> Create([FromBody] CreateProductDTO createProductDTO)
         {
             var createProduct = await _productService.Create(createProductDTO);

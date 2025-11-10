@@ -20,7 +20,7 @@ namespace Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/AllCategory")]
+        [HttpGet("/GetAllCategories")]
         public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
             return await _categoryService.GetAll();

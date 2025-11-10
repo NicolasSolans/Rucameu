@@ -23,7 +23,7 @@ namespace Presentation.Controllers
             _resendService = resendService;
         }
 
-        [HttpPost("newQuery")]
+        [HttpPost("/CreateQuery")]
         public async Task<ActionResult<QueryDTO>> CreateQuery([FromBody] CreateQueryDTO createQuery)
         {
             var result = await _queryService.CreateQuery(createQuery);
@@ -41,7 +41,7 @@ namespace Presentation.Controllers
         }
 
         [Authorize(Roles = "Admin, Employee")]
-        [HttpGet("getAllQueries")]
+        [HttpGet("/GetAllQueries")]
         public async Task<ActionResult<List<QueryDTO>>> GetAllQueries()
         {
             var result = await _queryService.GetAllQueries();
@@ -51,7 +51,7 @@ namespace Presentation.Controllers
         //GETQUERY
 
         [Authorize(Roles = "Admin, Employee")]
-        [HttpGet("getQuery/{id}")]
+        [HttpGet("/GetQueryById/{id}")]
         public async Task<ActionResult<QueryDTO>> GetQueryById([FromRoute] int id)
         {
             var result = await _queryService.GetQueryById(id);

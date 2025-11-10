@@ -22,7 +22,7 @@ namespace Presentation.Controllers
             _authenticationService = authenticationService;
         }
 
-        [HttpPost("/Employee/Register")]
+        [HttpPost("/RegisterEmployee")]
         public async Task<ActionResult<EmployeeDTO>> Create([FromBody] CreateEmployeeDTO createEmployeeDTO)
         {
             return await _userService.RegisterEmployee(createEmployeeDTO);

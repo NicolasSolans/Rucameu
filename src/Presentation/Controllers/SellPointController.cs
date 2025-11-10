@@ -19,14 +19,14 @@ namespace Presentation.Controllers
             _sellPointService = sellPointService;
         }
 
-        [HttpPost("/Create")]
+        [HttpPost("/CreateSellPoint")]
         public async Task<ActionResult<SellPointDTO>> CreateSellPoint([FromBody] CreateSellPointDTO createSellPointDTO)
         {
             return await _sellPointService.CreateSellPoint(createSellPointDTO);
 
         }
 
-        [HttpDelete("/Delete/{sellPointId}")]
+        [HttpDelete("/DeleteSellPoint/{sellPointId}")]
         public async Task<ActionResult> DeleteSellPoint([FromRoute]int sellPointId)
         {
             await _sellPointService.DeleteSellPoint(sellPointId);
@@ -34,7 +34,7 @@ namespace Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/GettAll")]
+        [HttpGet("/GettAllSellPoints")]
         public async Task<ActionResult<List<SellPointDTO>>> GetAllSellPoints()
         {
             return await _sellPointService.GetAllSellPoints();

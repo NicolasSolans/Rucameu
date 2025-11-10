@@ -20,7 +20,7 @@ namespace Presentation.Controllers
             _cartService = cartService;
             _authenticationService = authenticationService;
         }
-        [HttpPost("AgregarItem")]
+        [HttpPost("/AddItemToCart")]
         public async Task<ActionResult<ItemCartDTO>> AddProductToCart(CreateItemCartDTO createItemCartDTO)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
@@ -30,7 +30,7 @@ namespace Presentation.Controllers
             return await _cartService.AddItemCart(createItemCartDTO);
         }
 
-        [HttpDelete("EliminarItemCart")]
+        [HttpDelete("/DeleteItemCart")]
         public async Task<ActionResult<CartDTO>> DeleteItemCart([FromQuery] int productId)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
@@ -39,7 +39,7 @@ namespace Presentation.Controllers
             return cart;
         }
 
-        [HttpPut("IncrementarItemCart")]
+        [HttpPut("/IncrementItemCart")]
         public async Task<ActionResult<CartDTO>> IncrementItemCart([FromQuery] int productId)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
@@ -48,7 +48,7 @@ namespace Presentation.Controllers
             return cart;
         }
 
-        [HttpPut("DecreaseItemCart")]
+        [HttpPut("/DecreaseItemCart")]
         public async Task<ActionResult<CartDTO>> DecreaseItemCart([FromQuery] int productId)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);

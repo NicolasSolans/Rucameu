@@ -24,13 +24,13 @@ namespace Presentation.Controllers
             _authenticationService = authenticationService;
         }
 
-        [HttpPost("/Admin/Register")]
+        [HttpPost("/RegisterAdmin")]
         public async Task<ActionResult<AdminDTO>> Create([FromBody] CreateAdminDTO createAdminDTO)
         {
             return await _userService.RegisterAdmin(createAdminDTO);
         }
 
-        [HttpDelete("DeleteUser/{userId}")]
+        [HttpDelete("/DeleteUser/{userId}")]
         public async Task<ActionResult<UserDTO>> DeleteUser([FromRoute] int userId)
         {
             var user = await _userService.DeleteUser(userId);
