@@ -50,5 +50,11 @@ namespace Presentation.Controllers
         {
             return await _userService.ChangeRole(changeRolDTO);
         }
+
+        [HttpGet("/GetAllUsers")]
+        public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
+        {
+            return Ok(await _userService.GetAllUsers());
+        }
     }
 }
