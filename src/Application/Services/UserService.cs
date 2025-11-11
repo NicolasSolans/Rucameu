@@ -28,6 +28,13 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
+        public async Task<ClientDTO> GetClientById(int id)
+        {
+            var user = await _clientRepositoryBase.GetByIdAsync(id);
+            if (user == null) throw new NotFoundException("Usuario no encontrado.");
+            return ClientDTO.FromEntity(user);
+        }
+
         // ADMIN SERVICE
         public async Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO)
         {
