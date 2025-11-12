@@ -131,12 +131,14 @@ namespace Application.Services
 
         public async Task<CartDTO> ModifyItemCart(int cartId, int productId, bool incremented)
         {
+            var product = await _productRepository.GetByIdProductsWithCategory(productId);
             var item = await _itemCartRepository.GetByIdAsync(cartId, productId);
             var cart = await _cartRepository.GetByIdAsync(cartId);
             if(item == null) throw new NotFoundException("Item no encontrado en el carrito.");
 
             if (incremented)
             {
+                if (item.Quantity == product.Stock) throw new Exception("Stock Insuficiente");
                 item.Quantity += 1; 
                 
             }else
