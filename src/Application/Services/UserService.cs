@@ -46,6 +46,7 @@ namespace Application.Services
         public async Task<List<UserDTO>> GetAllUsers()
         {
             var users = await _userRepositoryBase.GetAllAsync();
+            if (users == null) throw new Exception("No se encontraron usuarios.");
             return UserDTO.CreateListDTO(users);
         }
         public async Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin)
@@ -122,7 +123,7 @@ namespace Application.Services
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("No se puede cambiar el rol a Client");
             }
 
 
