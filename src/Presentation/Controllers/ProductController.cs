@@ -19,6 +19,7 @@ namespace Presentation.Controllers
             _productService = productService;
         }
 
+        
         [HttpGet("/AllProducts")]
         public async Task<ActionResult<List<ProductDTO>>> GetAll()
         {

@@ -16,7 +16,7 @@ namespace Application.Interfaces
         Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient);
 
-        Task<ClientDTO> GetClientById(int id);
+        Task<ClientUpDTO> GetClientById(int id);
         //Admin Service
         Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO);
         Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin);

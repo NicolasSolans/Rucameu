@@ -19,8 +19,6 @@ namespace Application.Models.Request
         public string Email { get; set; }
         [Required(ErrorMessage = "El numero telefonico no puede estár vacío.")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "La contraseña no puede estár vacía.")]
-        public string Password { get; set; }
 
     }
 } 

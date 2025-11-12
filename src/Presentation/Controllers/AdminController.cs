@@ -44,7 +44,6 @@ namespace Presentation.Controllers
             await _authenticationService.ValidateIdUser(userId, updateAdmin.Id);
             return await _userService.UpdateAdmin(updateAdmin);
         }
-
         [HttpPost("/ChangeRole")]
         public async Task<ActionResult<UserDTO>> ChangeRole([FromBody] ChangeRolDTO changeRolDTO)
         {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class mergeQueryCartItemCart : Migration
+    public partial class LucaMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -190,7 +190,7 @@ namespace Infrastructure.Data.Migrations
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -199,9 +199,9 @@ namespace Infrastructure.Data.Migrations
                 columns: new[] { "Id", "AdminId", "Admin_Adress", "DateRegister", "Discriminator", "Email", "LastName", "Name", "Password", "PhoneNumber", "Role" },
                 values: new object[,]
                 {
-                    { 1, null, "Roldán", new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4944), "Admin", "lucapisso4@gmail.com", "Pisso", "Luca", "luca1234", "3416932072", "Admin" },
-                    { 2, null, "Rosario, centro", new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4958), "Admin", "nico.solans.drc@gmail.com", "Solans", "Nicolas", "nicolas1234", "3412173325", "Admin" },
-                    { 3, null, "Rosario, zona oeste", new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4960), "Admin", "lucasgluppi@gmail.com", "Luppi", "Lucas", "lucas1234", "3412707429", "Admin" }
+                    { 1, null, "Roldán", new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4238), "Admin", "lucapisso4@gmail.com", "Pisso", "Luca", "luca1234", "3416932072", "Admin" },
+                    { 2, null, "Rosario, centro", new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4261), "Admin", "nico.solans.drc@gmail.com", "Solans", "Nicolas", "nicolas1234", "3412173325", "Admin" },
+                    { 3, null, "Rosario, zona oeste", new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4263), "Admin", "lucasgluppi@gmail.com", "Luppi", "Lucas", "lucas1234", "3412707429", "Admin" }
                 });
 
             migrationBuilder.CreateIndex(

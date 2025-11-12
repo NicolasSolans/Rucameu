@@ -59,7 +59,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("/GetClientById/{id}")]
-        public async Task<ActionResult<ClientDTO>> GetClientById([FromRoute] int id)
+        public async Task<ActionResult<ClientUpDTO>> GetClientById([FromRoute] int id)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
             await _authenticationService.ValidateIdUser(userId, id);

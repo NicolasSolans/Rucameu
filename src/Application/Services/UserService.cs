@@ -28,11 +28,11 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ClientDTO> GetClientById(int id)
+        public async Task<ClientUpDTO> GetClientById(int id)
         {
             var user = await _clientRepositoryBase.GetByIdAsync(id);
             if (user == null) throw new NotFoundException("Usuario no encontrado.");
-            return ClientDTO.FromEntity(user);
+            return ClientUpDTO.FromEntity(user);
         }
 
         // ADMIN SERVICE
@@ -57,7 +57,6 @@ namespace Application.Services
             user.LastName = updateAdmin.LastName;
             user.Email = updateAdmin.Email;
             user.PhoneNumber = updateAdmin.PhoneNumber;
-            user.Password = updateAdmin.Password;
             //No actualiza la lista de usuarios eliminados
 
             await _userRepositoryBase.UpdateAsync(user);
@@ -148,7 +147,6 @@ namespace Application.Services
             user.LastName = updateEmployee.LastName;
             user.Email = updateEmployee.Email;
             user.PhoneNumber = updateEmployee.PhoneNumber;
-            user.Password = updateEmployee.Password;
 
             await _userRepositoryBase.UpdateAsync(user);
             return EmployeeDTO.FromEntity(user);
@@ -172,7 +170,6 @@ namespace Application.Services
             user.LastName = updateClient.LastName;
             user.Email = updateClient.Email;
             user.PhoneNumber = updateClient.PhoneNumber;
-            user.Password = updateClient.Password;
 
             await _userRepositoryBase.UpdateAsync(user);
             return ClientDTO.FromEntity(user);

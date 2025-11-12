@@ -257,7 +257,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4944),
+                            DateRegister = new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4238),
                             Email = "lucapisso4@gmail.com",
                             LastName = "Pisso",
                             Name = "Luca",
@@ -269,7 +269,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4958),
+                            DateRegister = new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4261),
                             Email = "nico.solans.drc@gmail.com",
                             LastName = "Solans",
                             Name = "Nicolas",
@@ -281,7 +281,7 @@ namespace Infrastructure.Data.Migrations
                         new
                         {
                             Id = 3,
-                            DateRegister = new DateTime(2025, 10, 28, 12, 21, 17, 97, DateTimeKind.Local).AddTicks(4960),
+                            DateRegister = new DateTime(2025, 11, 11, 8, 24, 34, 63, DateTimeKind.Local).AddTicks(4263),
                             Email = "lucasgluppi@gmail.com",
                             LastName = "Luppi",
                             Name = "Lucas",
@@ -355,7 +355,7 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Domain.Entities.Cart", "Cart")
                         .WithOne("Query")
                         .HasForeignKey("Domain.Entities.Query", "CartId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Cart");
                 });
