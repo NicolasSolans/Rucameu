@@ -29,6 +29,6 @@ namespace Application.Models.Request
 
         [Required(ErrorMessage = "La categoria es obligatoria.")]
         public int CategoryId { get; set; }
-        public bool Enable { get; set; } = true;
+        //public bool Enable { get; set; } = true;
     }
 }
