@@ -95,8 +95,9 @@ namespace Application.Services
             if (producto.Enable == false) throw new Exception("Producto no existente.");
             if (itemExistente != null)
             {
-                
+
                 itemExistente.Quantity += CreateItemCartDTO.Quantity;
+                itemExistente.Subtotal = producto.Price * itemExistente.Quantity;
                 await _itemCartRepository.UpdateAsync(itemExistente);
                 return ItemCartDTO.FromEntity(itemExistente);
             }
@@ -136,11 +137,16 @@ namespace Application.Services
 
             if (incremented)
             {
-                item.Quantity += 1;  
+                item.Quantity += 1; 
+                
             }else
             {
                 item.Quantity -= 1;
-            }
+                if (item.Quantity <= 0)
+                {
+                    await DeleteItemCart(cartId, productId);
+                }
+                }
 
             item.Subtotal = item.Product.Price * item.Quantity;
             cart.TotalPrice = cart.Items

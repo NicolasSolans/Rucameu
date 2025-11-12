@@ -73,7 +73,7 @@ namespace Infrastructure.Services
                 _config["Authentication:Audience"],
                 claimsForToken,
                 DateTime.UtcNow,
-                DateTime.UtcNow.AddMinutes(15), //TIEMPO DE EXP
+                DateTime.UtcNow.AddMinutes(60), //TIEMPO DE EXP
                 signature
             );
 
