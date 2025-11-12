@@ -119,5 +119,28 @@ namespace Application.Services
             return "Producto borrado correctamente";
 
         }
+
+        public async Task<string> Enable(int id)
+        {
+            var findProduct = await _repositoryBaseProduct.GetByIdAsync(id);
+            if (findProduct == null)
+            {
+                throw new NotFoundException($"No se encontro el producto con id {id}");
+            }
+            findProduct.Enable = true;
+            await _repositoryBaseProduct.DisableAsync(findProduct); //Usamos el mismo que Disable xq simplemente actualiza la entidad.
+            return "Producto habilitado correctamente";
+        }
+
+        public async Task<string> Delete(int id)
+        {
+            var findProduct = await _repositoryBaseProduct.GetByIdAsync(id);
+            if (findProduct == null)
+            {
+                throw new NotFoundException($"No se encontro el producto con id {id}");
+            }
+            await _repositoryBaseProduct.DeleteAsync(findProduct);
+            return "Producto eliminado correctamente";
+        }
     }
 }

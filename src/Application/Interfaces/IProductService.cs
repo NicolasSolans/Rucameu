@@ -23,8 +23,10 @@ namespace Application.Interfaces
 
         //UPDATE
         Task<ProductDTO> Update(UpdateProductDTO updateProduct);
+        Task<string> Disable(int id);
+        Task<string> Enable(int id);
 
         //DELETE
-        Task<string> Disable(int id);
+        Task<string> Delete(int id);
     }
 }

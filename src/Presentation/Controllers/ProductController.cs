@@ -67,10 +67,24 @@ namespace Presentation.Controllers
             return Ok(product);
         }
 
+        [HttpPut("/EnableProduct/{id}")]
+        public async Task<ActionResult<string>> Enable([FromRoute] int id)
+        {
+            var product = await _productService.Enable(id);
+            return Ok(product);
+        }
+
         [HttpPut("/DisableProduct/{id}")]
         public async Task<ActionResult<string>> Disable([FromRoute] int id)
         {
             var product = await _productService.Disable(id);
+            return Ok(product);
+        }
+
+        [HttpDelete("/DeleteProduct/{id}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] int id)
+        {
+            var product = await _productService.Delete(id);
             return Ok(product);
         }
     }
