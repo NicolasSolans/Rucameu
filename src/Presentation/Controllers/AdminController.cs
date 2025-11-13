@@ -12,7 +12,7 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize (Roles = "Admin")]
+    [Authorize(Roles = "Admin, Employee")]
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -38,7 +38,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("/UpdateAdmin")]
-        public async Task<ActionResult<AdminDTO>> Update([FromBody] UpdateAdminDTO updateAdmin)
+        public async Task<ActionResult<AdminUpDTO>> Update([FromBody] UpdateAdminDTO updateAdmin)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
             await _authenticationService.ValidateIdUser(userId, updateAdmin.Id);
@@ -55,5 +55,11 @@ namespace Presentation.Controllers
         {
             return Ok(await _userService.GetAllUsers());
         }
+
+        //[HttpGet("/GetAdminById/{id}")]
+        //public async Task<ActionResult<AdminUpDTO>> GetAdminById([FromRoute] int id)
+        //{
+        //    return Ok(await _userService.GetAdminById(id));
+        //}
     }
 }

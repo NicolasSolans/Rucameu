@@ -29,7 +29,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("/UpdateEmployee")]
-        public async Task<ActionResult<EmployeeDTO>> Update([FromBody] UpdateEmployeeDTO updateEmployee)
+        public async Task<ActionResult<EmployeeUpDTO>> Update([FromBody] UpdateEmployeeDTO updateEmployee)
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value);
             await _authenticationService.ValidateIdUser(userId, updateEmployee.Id);

@@ -49,7 +49,25 @@ namespace Application.Services
             if (users == null) throw new Exception("No se encontraron usuarios.");
             return UserDTO.CreateListDTO(users);
         }
-        public async Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin)
+
+        public async Task<object> GetAdminOrEmployeeById(int id)
+        {
+            var user = await _userRepositoryBase.GetByIdAsync(id);
+            if (user == null) throw new NotFoundException("Usuario no encontrado.");
+            if (user.Role == "Admin")
+            {
+                var adminUser = await _adminRepositoryBase.GetByIdAsync(id);
+                return AdminUpDTO.FromEntity(adminUser);
+            } else if (user.Role == "Employee")
+            {
+                var employeeUser = await _employeeRepositoryBase.GetByIdAsync(id);
+                return EmployeeUpDTO.FromEntity(employeeUser);
+            } else
+            {
+                throw new Exception("El usuario encontrado es un cliente.");
+            }
+        }
+        public async Task<AdminUpDTO> UpdateAdmin(UpdateAdminDTO updateAdmin)
         {
             var user = await _adminRepositoryBase.GetByIdAsync(updateAdmin.Id);
             if (user == null) throw new Exception("No se encontro al admin.");
@@ -58,10 +76,11 @@ namespace Application.Services
             user.LastName = updateAdmin.LastName;
             user.Email = updateAdmin.Email;
             user.PhoneNumber = updateAdmin.PhoneNumber;
+            user.Adress = updateAdmin.Adress;
             //No actualiza la lista de usuarios eliminados
 
             await _userRepositoryBase.UpdateAsync(user);
-            return AdminDTO.FromEntity(user);
+            return AdminUpDTO.FromEntity(user);
         }
         public async Task<UserDTO> DeleteUser(int Id)
         {
@@ -139,7 +158,7 @@ namespace Application.Services
             return newEmployeeDto;
         }
 
-        public async Task<EmployeeDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee)
+        public async Task<EmployeeUpDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee)
         {
             var user = await _employeeRepositoryBase.GetByIdAsync(updateEmployee.Id);
             if (user == null) throw new Exception("No se encontro al cliente.");
@@ -148,9 +167,10 @@ namespace Application.Services
             user.LastName = updateEmployee.LastName;
             user.Email = updateEmployee.Email;
             user.PhoneNumber = updateEmployee.PhoneNumber;
+            user.Adress = updateEmployee.Adress;
 
             await _userRepositoryBase.UpdateAsync(user);
-            return EmployeeDTO.FromEntity(user);
+            return EmployeeUpDTO.FromEntity(user);
         }
 
         //CLIENT SERVICES

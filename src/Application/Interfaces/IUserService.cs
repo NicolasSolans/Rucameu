@@ -15,17 +15,18 @@ namespace Application.Interfaces
         //Client Service
         Task<ClientDTO> RegisterClient(CreateClientDTO createClientDTO);
         Task<ClientDTO> UpdateClient(UpdateClientDTO updateClient);
+        Task<object> GetAdminOrEmployeeById(int id);
 
         Task<ClientUpDTO> GetClientById(int id);
         //Admin Service
         Task<UserDTO> ChangeRole(ChangeRolDTO changeRolDTO);
-        Task<AdminDTO> UpdateAdmin(UpdateAdminDTO updateAdmin);
+        Task<AdminUpDTO> UpdateAdmin(UpdateAdminDTO updateAdmin);
         Task<AdminDTO> RegisterAdmin(CreateAdminDTO createAdminDTO);
         Task<List<UserDTO>> GetAllUsers();
         Task<UserDTO> DeleteUser(int userId);
         //Employee Service
         Task<EmployeeDTO> RegisterEmployee(CreateEmployeeDTO createEmployeeDTO);
-        Task<EmployeeDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee);
+        Task<EmployeeUpDTO> UpdateEmployee(UpdateEmployeeDTO updateEmployee);
 
     }
 }

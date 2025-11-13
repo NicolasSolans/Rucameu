@@ -65,5 +65,12 @@ namespace Presentation.Controllers
             await _authenticationService.ValidateIdUser(userId, id);
             return await _userService.GetClientById(id);
         }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpGet("/GetAdminOrEmployeeById/{id}")]
+        public async Task<ActionResult<object>> GetAdminById([FromRoute] int id)
+        {
+            return Ok(await _userService.GetAdminOrEmployeeById(id));
+        }
     }
 }
