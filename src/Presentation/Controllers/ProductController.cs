@@ -34,6 +34,15 @@ namespace Presentation.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("/AllEnableProductByCategory/{categoryId}")]
+        public async Task<ActionResult<List<ProductDTO>>> GetAllEnableByCategory([FromRoute] int categoryId)
+        {
+            var Products = await _productService.GetAllEnable();
+            var selectedProducts = Products.Where(p => p.CategoryDTO.Id == categoryId).ToList();
+            return selectedProducts;
+        }
+
+        [AllowAnonymous]
         [HttpGet("/GetById/{id}")]
         public async Task<ActionResult<ProductDTO>> GetById([FromRoute] int id)
         {

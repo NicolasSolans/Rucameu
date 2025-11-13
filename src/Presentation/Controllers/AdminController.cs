@@ -12,7 +12,6 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -23,20 +22,20 @@ namespace Presentation.Controllers
             _userService = userService;
             _authenticationService = authenticationService;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("/RegisterAdmin")]
         public async Task<ActionResult<AdminDTO>> Create([FromBody] CreateAdminDTO createAdminDTO)
         {
             return await _userService.RegisterAdmin(createAdminDTO);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("/DeleteUser/{userId}")]
         public async Task<ActionResult<UserDTO>> DeleteUser([FromRoute] int userId)
         {
             var user = await _userService.DeleteUser(userId);
             return user;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("/UpdateAdmin")]
         public async Task<ActionResult<AdminUpDTO>> Update([FromBody] UpdateAdminDTO updateAdmin)
         {
@@ -44,12 +43,15 @@ namespace Presentation.Controllers
             await _authenticationService.ValidateIdUser(userId, updateAdmin.Id);
             return await _userService.UpdateAdmin(updateAdmin);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost("/ChangeRole")]
         public async Task<ActionResult<UserDTO>> ChangeRole([FromBody] ChangeRolDTO changeRolDTO)
         {
             return await _userService.ChangeRole(changeRolDTO);
         }
 
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet("/GetAllUsers")]
         public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
         {
