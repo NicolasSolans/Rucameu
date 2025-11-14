@@ -85,10 +85,8 @@ namespace Application.Services
         public async Task<UserDTO> DeleteUser(int Id)
         {
             var userToDelete = await  _userRepositoryBase.GetByIdAsync(Id);
-            if (userToDelete == null)
-            {
-                throw new NotImplementedException();
-            }
+            if (userToDelete == null) throw new NotImplementedException("No se encontro al usuario.");
+            if (userToDelete.Id <= 3) throw new Exception("No se puede editar un super admin.");
             // CUANDO TENGAMOS TOKEN, USAR EL ID DEL ADMIN QUE VIENE EN EL MISMO
             // _adminRepository.AddUserDeleted(userToDelete, adminId);
             await _userRepositoryBase.DeleteAsync(userToDelete);
