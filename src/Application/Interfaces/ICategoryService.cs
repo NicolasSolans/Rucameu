@@ -16,6 +16,7 @@ namespace Application.Interfaces
         Task<CategoryDTO> Create(CreateCategoryDTO newCategory);
         Task<CategoryDTO> Update(UpdateCategoryDTO updateCategory);
         Task<string> Disable(int id);
+        Task<string> Delete(int id);
             
     }
 }

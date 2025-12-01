@@ -14,15 +14,17 @@ namespace Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepositoryBase<Category> _repositoryBase;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryService(IRepositoryBase<Category> repositoryBase)
+        public CategoryService(IRepositoryBase<Category> repositoryBase, ICategoryRepository categoryRepository  )
         {
             _repositoryBase = repositoryBase;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<List<CategoryDTO>> GetAll()
         {
-            var category = await _repositoryBase.GetAllAsync();
+            var category = await _categoryRepository.GetAllCategoryWithProducts();
             return CategoryDTO.CreateListDTO(category);
         }
 
@@ -58,6 +60,15 @@ namespace Application.Services
 
             await _repositoryBase.UpdateAsync(findCategory);
             return CategoryDTO.FromEntity(findCategory);
+        }
+
+        public async Task<string> Delete(int id)
+        {
+            var findCategory = await _repositoryBase.GetByIdAsync(id);
+            if (findCategory == null) throw new Exception("No se encontro la categoría");
+
+            await _repositoryBase.DeleteAsync(findCategory);
+            return ("Categoria eliminada correctamente");
         }
 
         //NO SE USA EN CATEGORY.

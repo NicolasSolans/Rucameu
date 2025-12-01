@@ -149,6 +149,7 @@ builder.Services.AddScoped<IRepositoryBase<Query>, RepositoryBase<Query>>();
 builder.Services.AddScoped<IItemCartRepository, ItemCartRepository>();
 builder.Services.AddScoped<IQueryRepository, QueryRepository>();
 builder.Services.AddScoped<IResendService, ResendService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
 

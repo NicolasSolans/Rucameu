@@ -44,5 +44,11 @@ namespace Presentation.Controllers
         {
             return await _categoryService.Update(updateCategory);
         }
+
+        [HttpDelete("/DeleteCategory/{id}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] int id)
+        {
+            return await _categoryService.Delete(id);
+        }
     }
 }

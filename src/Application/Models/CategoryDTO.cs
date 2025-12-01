@@ -12,6 +12,7 @@ namespace Application.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool HasProducts { get; set; }
 
         public static CategoryDTO FromEntity(Category category)
         {
@@ -19,6 +20,7 @@ namespace Application.Models
             dto.Id = category.Id;
             dto.Name = category.Name;
             dto.Description = category.Description;
+            dto.HasProducts = category.Products != null && category.Products.Any();
 
             return dto;
         }
